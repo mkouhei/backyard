@@ -1,0 +1,5 @@
+[run]
+include =
+    backyard/*
+omit =
+    backyard/tests/*
