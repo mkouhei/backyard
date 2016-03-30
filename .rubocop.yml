@@ -1,6 +1,0 @@
-AllCops:
-  RunRailsCops: true
-  Exclude:
-    - 'log/**/*'
-    - 'vendor/**/*'
-    - 'spec/**/*'
