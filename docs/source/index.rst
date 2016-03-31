@@ -7,9 +7,9 @@ Contents:
    :maxdepth: 2
 
    README
+   design-notes
    modules/index
 
-.. ##### ToDo: Rewrite about documentation indexes. #####
 
 .. toctree::
    :maxdepth: 1

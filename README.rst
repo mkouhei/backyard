@@ -2,7 +2,8 @@
  backyard
 ==========
 
-TODO: Rewrite me. Append your package's long description.
+This project helps inventory and order management for your home of daily necesities.
+
 
 
 Status
