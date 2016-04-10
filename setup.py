@@ -46,6 +46,9 @@ classifiers = [
     "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
+    "Framework :: Pyramid",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
 
 
@@ -53,7 +56,17 @@ long_description = (
     read_content("README.rst") +
     read_content(os.path.join("docs/source", "CHANGELOG.rst")))
 
-requires = ['setuptools']
+requires = ['setuptools',
+            'pyramid',
+            'pyramid_chameleon',
+            'pyramid_debugtoolbar',
+            'pyramid_tm',
+            'SQLAlchemy',
+            'transaction',
+            'zope.sqlalchemy',
+            'waitress',
+            'webtest',
+            'mock']
 
 extras_require = {
     'reST': ['Sphinx'],
@@ -69,7 +82,7 @@ with open('extras_requirement.txt', 'w') as _file:
 
 setup(name='backyard',
       version='0.1.0',
-      description='It helps inventory and order management for your home of daily necesities.',
+      description='It helps inventory and order management for your home of daily necessities.',
       long_description=long_description,
       author='Kouhei Maeda',
       author_email='mkouhei@palmtb.net',
@@ -81,4 +94,8 @@ setup(name='backyard',
       include_package_data=True,
       extras_require=extras_require,
       tests_require=['tox'],
-      cmdclass={'test': Tox},)
+      cmdclass={'test': Tox},
+      entry_points={
+          'paste.app_factory': ['main = backyard.run:main'],
+          'console_scripts': ['initialize_backyard_db = '
+                              'backyard.scripts.initializedb:main']},)
