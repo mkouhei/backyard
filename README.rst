@@ -52,3 +52,14 @@ ToDo: Rewrite me.
   'hello'
   >>>
 
+
+Getting Started
+===============
+
+- cd <directory containing this file>
+
+- $VENV/bin/python setup.py develop
+
+- $VENV/bin/initialize_hoge_db development.ini
+
+- $VENV/bin/pserve development.ini
