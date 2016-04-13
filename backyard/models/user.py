@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""backyard.models."""
+"""backyard.models.user."""
 from sqlalchemy import (
     Column,
     Index,
@@ -7,17 +7,7 @@ from sqlalchemy import (
     Text,
     )
 
-from sqlalchemy.ext.declarative import declarative_base
-
-from sqlalchemy.orm import (
-    scoped_session,
-    sessionmaker,
-    )
-
-from zope.sqlalchemy import ZopeTransactionExtension
-
-DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
-Base = declarative_base()
+from .base import Base
 
 
 class User(Base):
