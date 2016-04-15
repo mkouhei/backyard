@@ -1,5 +1,6 @@
 [MASTER]
-ignore=setup.py,docs/source/conf.py
+ignore=setup.py,docs/source/conf.py,runapp.py
 
 [MESSAGES CONTROL]
-#disable=
+disable=invalid-name,
+    too-few-public-methods

@@ -2,7 +2,13 @@
 """backyard.controllers.base."""
 import sys
 import pkg_resources
-from backyard import __project__, __version__, __author__, __repo__, READTHEDOCS
+from backyard import (
+    __project__,
+    __version__,
+    __author__,
+    __repo__,
+    READTHEDOCS
+)
 
 
 def get_ver(pkg_name):

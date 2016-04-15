@@ -20,7 +20,9 @@ from ..models.base import (
 
 from ..models.user import User
 
+
 def usage(argv):
+    """inititalizedb script usage."""
     cmd = os.path.basename(argv[0])
     print('usage: {0} <config_uri> [var=value]\n'
           '(example: {1} development.ini")'.format(cmd, cmd))
@@ -28,6 +30,7 @@ def usage(argv):
 
 
 def main(argv=sys.argv):
+    """main function."""
     if len(argv) < 2:
         usage(argv)
     config_uri = argv[1]

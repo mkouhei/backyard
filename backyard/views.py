@@ -15,7 +15,6 @@ class Views(object):
         self.layout = renderer.implementation().macros['layout']
         self.meta = meta()
 
-
     @view_config(route_name='index', renderer='templates/index.pt')
     @view_config(route_name='signup', renderer='templates/signup.pt')
     @view_config(route_name='signin', renderer='templates/signin.pt')
