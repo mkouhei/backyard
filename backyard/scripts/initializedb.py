@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """backyard.models.initializedb."""
-import os
-import sys
 import argparse
 
 import transaction
@@ -12,12 +10,12 @@ from pyramid.paster import (
     )
 from pyramid.scripts.common import parse_vars
 
-from ..models.base import (
+from backyard.models.base import (
     DBSession,
     Base,
     )
 
-from ..models.user import User
+from backyard.models.user import User
 
 
 def parse_options():

@@ -4,7 +4,7 @@ import transaction
 
 from pyramid import testing
 
-from ..models.base import DBSession
+from backyard.models.base import DBSession
 
 
 class TestUserSuccessCondition(unittest.TestCase):
@@ -15,8 +15,8 @@ class TestUserSuccessCondition(unittest.TestCase):
         self.config = testing.setUp()
         from sqlalchemy import create_engine
         engine = create_engine('sqlite://')
-        from ..models.base import Base
-        from ..models.user import User
+        from backyard.models.base import Base
+        from backyard.models.user import User
         DBSession.configure(bind=engine)
         Base.metadata.create_all(engine)
         with transaction.manager:
@@ -32,9 +32,9 @@ class TestUserSuccessCondition(unittest.TestCase):
     @unittest.skip
     def test_passing_view(self):
         """view test."""
-        from backyard.views import user_view
+        from backyard.views import Views
         request = testing.DummyRequest()
-        info = user_view(request)
+        info = Views(request).index()
         self.assertEqual(info['admin'].name, 'admin')
         self.assertEqual(info['email'], 'admin@example.org')
 
@@ -46,8 +46,8 @@ class TestUserFailureCondition(unittest.TestCase):
         self.config = testing.setUp()
         from sqlalchemy import create_engine
         engine = create_engine('sqlite://')
-        from ..models.base import Base
-        from ..models.user import User
+        from backyard.models.base import Base
+        from backyard.models.user import User
         DBSession.configure(bind=engine)
 
     def tearDown(self):
@@ -58,7 +58,7 @@ class TestUserFailureCondition(unittest.TestCase):
     @unittest.skip
     def test_failing_view(self):
         """view test."""
-        from backyard.views import my_view
+        from backyard.views import Views
         request = testing.DummyRequest()
-        info = my_view(request)
+        info = Views(request).index()
         self.assertEqual(info.status_int, 500)
