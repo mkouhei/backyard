@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""backyard.tests.models.test_user."""
 import unittest
 import transaction
 
