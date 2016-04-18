@@ -3,4 +3,5 @@ ignore=setup.py,docs/source/conf.py,runapp.py
 
 [MESSAGES CONTROL]
 disable=invalid-name,
-    too-few-public-methods
+    too-few-public-methods,
+    no-member
