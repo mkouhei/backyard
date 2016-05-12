@@ -41,25 +41,25 @@
         
         <div class="collapse navbar-collapse" id="navbar-h">
           <ul class="nav navbar-nav navbar-right">
-            <!-- not sign in -->
+            <!-- not logged in -->
             <li>
               <a href="/signup" title="Sign up">
                 <i class="glyphicon glyphicon-pencil"></i>
               </a>
             </li>
             <li>
-              <a href="/signin" title="Sign in">
+              <a href="/login" title="Log in">
                 <i class="glyphicon glyphicon-log-in"></i>
               </a>
             </li>
-            <!-- sign in -->
+            <!-- Logged in -->
             <li>
               <a href="/settings" title="settings">
                 <i class="glyphicon glyphicon-cog"></i>
               </a>
             </li>
             <li>
-              <a href="/signout" title="signout">
+              <a href="/logout" title="logout">
                 <i class="glyphicon glyphicon glyphicon-off"></i>
               </a>
             </li>

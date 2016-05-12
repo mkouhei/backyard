@@ -8,11 +8,11 @@
             <h1>
               <span class="font-semi-bold">sign up</span>
             </h1>
-            <form action="/register" method="post" class="input-group">
-              <input class="form-control" type="text" placeholder="username" />
+            <form action="/user" method="post" class="input-group">
+              <input class="form-control" type="text" name="username" placeholder="username" required="required" />
               <div class="col-md-3"></div>
-              <input class="form-control" name="password" type="password" placeholder="type password" />
-              <input class="form-control" name="password_confirmation" type="password" placeholder="re-type password" />
+              <input class="form-control" type="password" name="password" placeholder="type password" required="required" />
+              <input class="form-control" type="password" name="password_confirmation" placeholder="re-type password" required="required" />
               <button type="submit" id="submit" class="btn btn-primary">register</button>
               <button type="reset" id="reset" class="btn btn-default">cancel</button>
             </form>

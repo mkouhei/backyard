@@ -1,18 +1,18 @@
 <metal:block use-macro="view.layout">
   <div metal:fill-slot="content">
-    <div class="signin-page">
+    <div class="login-page">
       <div class="row">
         <div class="col-md-10">
           <div class="col-md-3"></div>
           <div class="col-md-4">
             <h1>
-              <span class="font-semi-bold">sign in</span>
+              <span class="font-semi-bold">log in</span>
             </h1>
-            <form action="/register" method="post" class="input-group">
-              <input class="form-control" type="text" placeholder="username" />
+            <form action="/user/session" method="post" class="input-group">
+              <input class="form-control" type="text" name="username" placeholder="username" required="required" />
               <div class="col-md-3"></div>
-              <input class="form-control" name="password" type="password" placeholder="type password" />
-              <button type="submit" id="submit" class="btn btn-primary">sign in</button>
+              <input class="form-control" type="password" name="password" placeholder="type password" required="required" />
+              <button type="submit" id="submit" class="btn btn-primary">log in</button>
               <button type="reset" id="reset" class="btn btn-default">cancel</button>
             </form>
           </div>

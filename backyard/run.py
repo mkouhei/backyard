@@ -8,6 +8,7 @@ from .models.base import (
     DBSession,
     Base,
 )
+from .routes import routes
 
 
 def main(global_config, **settings):
@@ -18,9 +19,5 @@ def main(global_config, **settings):
     Base.metadata.bind = engine
     config = Configurator(settings=settings)
     config.include('pyramid_chameleon')
-    config.add_static_view('assets', 'assets', cache_max_age=3600)
-    config.add_route('index', '/')
-    config.add_route('signup', '/signup')
-    config.add_route('signin', '/signin')
-    config.scan()
+    routes(config)
     return config.make_wsgi_app()
