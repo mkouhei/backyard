@@ -12,4 +12,4 @@ dist/
 htmlcov
 *requirement*.txt
 *.pickle
-*.sqlite
+*.sqlite*
