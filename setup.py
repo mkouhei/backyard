@@ -46,7 +46,6 @@ classifiers = [
     "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
-    "Framework :: Pyramid",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
@@ -56,17 +55,7 @@ long_description = (
     read_content("README.rst") +
     read_content(os.path.join("docs/source", "CHANGELOG.rst")))
 
-requires = ['setuptools',
-            'pyramid',
-            'pyramid_chameleon',
-            'pyramid_debugtoolbar',
-            'pyramid_tm',
-            'SQLAlchemy',
-            'transaction',
-            'zope.sqlalchemy',
-            'waitress',
-            'webtest',
-            'mock']
+requires = ['setuptools']
 
 extras_require = {
     'reST': ['Sphinx'],
