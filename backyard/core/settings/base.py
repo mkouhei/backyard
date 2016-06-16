@@ -30,7 +30,8 @@ ROOT_URLCONF = 'backyard.core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['backyard/templates',
+                 'backyard/inventory/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
