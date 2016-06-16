@@ -1,3 +1,2 @@
-from django.contrib import admin
-
-# Register your models here.
+"""backyard.inventory.admin."""
+# from django.contrib import admin

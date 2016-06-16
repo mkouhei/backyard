@@ -1,3 +1,2 @@
-from django.db import models
-
-# Create your models here.
+"""backyard.inventory.models."""
+# from django.db import models
