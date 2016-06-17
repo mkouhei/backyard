@@ -1,5 +1,5 @@
 [MASTER]
-ignore=setup.py,docs/source/conf.py
+ignore=setup.py,docs/source/conf.py,backyard/core/settings/development.py,backyard/core/settings/testing.py
 
 [MESSAGES CONTROL]
 disable=invalid-name,
