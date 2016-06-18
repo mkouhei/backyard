@@ -6,5 +6,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', include('backyard.inventory.urls')),
+    url(r'^', include('backyard.inventory.urls')),
 ]
