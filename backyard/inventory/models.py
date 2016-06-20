@@ -23,6 +23,20 @@ class Production(BaseModel):
     maker = models.ForeignKey(Maker)
 
 
+class ECUser(BaseModel):
+    """Online shop user."""
+    name = models.CharField(max_length=255)
+    encrypted_password = models.CharField(max_length=255)
+    email = models.EmailField()
+
+
+class Shop(BaseModel):
+    """Shop."""
+    name = models.CharField(unique=True, max_length=255)
+    url = models.URLField(unique=True)
+    user = models.ForeignKey(ECUser)
+
+
 class Inventory(BaseModel):
     """Inventory."""
     production = models.ForeignKey(Production)
