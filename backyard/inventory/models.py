@@ -14,12 +14,12 @@ class BaseModel(models.Model):
 
 class Maker(BaseModel):
     """Maker."""
-    name = models.CharField(unique=True)
+    name = models.CharField(unique=True, max_length=255)
 
 
 class Production(BaseModel):
     """Productions."""
-    name = models.CharField()
+    name = models.CharField(unique=True, max_length=255)
     maker = models.ForeignKey(Maker)
 
 
