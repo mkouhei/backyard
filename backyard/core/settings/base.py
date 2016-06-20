@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'backyard.inventory'
 ]
 
 MIDDLEWARE_CLASSES = [
