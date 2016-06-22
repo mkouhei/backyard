@@ -31,7 +31,7 @@ class ExtenalAccount(BaseModel):
 
 
 class Shop(BaseModel):
-    """Shop."""
+    """External Shop."""
     name = models.CharField(unique=True, max_length=255)
     url = models.URLField(unique=True)
     user = models.ForeignKey(ECUser)
