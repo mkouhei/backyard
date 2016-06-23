@@ -17,8 +17,8 @@ class Maker(BaseModel):
     name = models.CharField(unique=True, max_length=255)
 
 
-class Production(BaseModel):
-    """Productions."""
+class Product(BaseModel):
+    """Products."""
     name = models.CharField(unique=True, max_length=255)
     maker = models.ForeignKey(Maker)
 
@@ -39,5 +39,5 @@ class Shop(BaseModel):
 
 class Inventory(BaseModel):
     """Inventory."""
-    production = models.ForeignKey(Production)
+    product = models.ForeignKey(Product)
     amount = models.IntegerField()
