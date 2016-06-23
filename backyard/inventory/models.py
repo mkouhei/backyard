@@ -23,7 +23,7 @@ class Production(BaseModel):
     maker = models.ForeignKey(Maker)
 
 
-class ExtenalAccount(BaseModel):
+class ExternalAccount(BaseModel):
     """Online shop account."""
     name = models.CharField(max_length=255)
     encrypted_password = models.CharField(max_length=255)
