@@ -48,6 +48,7 @@ class Shop(BaseModel):
 
 
 class PriceHistory(BaseHistory):
+    """Price histories."""
     product = models.ForeignKey(Product)
     shop = models.ForeignKey(Shop)
     registred_date = models.DateField()
@@ -61,6 +62,7 @@ class Inventory(BaseModel):
 
 
 class OrderHistory(BaseHistory):
+    """Order histories."""
     ordered_at = models.DateTimeField()
     order_item = models.ForeignKey(Product)
     price = models.ForeignKey(PriceHistory)
