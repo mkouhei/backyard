@@ -12,6 +12,16 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class BaseHistory(BaseModel):
+    """Abstract History base model."""
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta(object):
+        """meta class."""
+        abstract = True
+
+
 class Maker(BaseModel):
     """Maker."""
     name = models.CharField(unique=True, max_length=255)
@@ -37,7 +47,22 @@ class Shop(BaseModel):
     user = models.ForeignKey(ExternalAccount)
 
 
+class PriceHistory(BaseHistory):
+    product = models.ForeignKey(Product)
+    shop = models.ForeignKey(Shop)
+    registred_date = models.DateField()
+    price = models.IntegerField()
+
+
 class Inventory(BaseModel):
     """Inventory."""
     product = models.ForeignKey(Product)
+    amount = models.IntegerField()
+
+
+class OrderHistory(BaseHistory):
+    ordered_at = models.DateTimeField()
+    order_item = models.ForeignKey(Product)
+    price = models.ForeignKey(PriceHistory)
+    count = models.IntegerField()
     amount = models.IntegerField()
