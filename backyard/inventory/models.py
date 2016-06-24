@@ -54,6 +54,10 @@ class PriceHistory(BaseHistory):
     registered_date = models.DateField()
     price = models.IntegerField()
 
+    class Meta(object):
+        """Meta data."""
+        unique_together = ('product', 'registered_date')
+
 
 class Inventory(BaseModel):
     """Inventory."""
@@ -69,9 +73,17 @@ class OrderHistory(BaseHistory):
     count = models.IntegerField()
     amount = models.IntegerField()
 
+    class Meta(object):
+        """Meta data."""
+        unique_together = ('order_item', 'ordered_at')
+
 
 class ReceiveHistory(BaseHistory):
     """Receive histories."""
     received_at = models.DateTimeField()
     received_item = models.ForeignKey(OrderHistory)
     difference_count = models.IntegerField()
+
+    class Meta(object):
+        """Meta data."""
+        unique_together = ('received_item', 'received_at')
