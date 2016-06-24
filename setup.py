@@ -6,6 +6,7 @@ import sys
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
+
 class Tox(TestCommand):
     user_options = [('tox-args=', 'a', 'Arguments to pass to tox')]
 
@@ -36,7 +37,8 @@ def read_content(filepath):
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "License :: OSI Approved :: "
+    "GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python",
     "Programming Language :: Python :: 2",
     "Programming Language :: Python :: 2.7",
@@ -72,7 +74,8 @@ with open('extras_requirement.txt', 'w') as _file:
 
 setup(name='backyard',
       version='0.1.0',
-      description='It helps inventory and order management for your home of daily necessities.',
+      description=('It helps inventory and order management '
+                   'for your home of daily necessities.'),
       long_description=long_description,
       author='Kouhei Maeda',
       author_email='mkouhei@palmtb.net',
