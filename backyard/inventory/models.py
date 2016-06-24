@@ -68,3 +68,10 @@ class OrderHistory(BaseHistory):
     price = models.ForeignKey(PriceHistory)
     count = models.IntegerField()
     amount = models.IntegerField()
+
+
+class ReceiveHistory(BaseHistory):
+    """Receive histories."""
+    received_at = models.DateTimeField()
+    received_item = models.ForeignKey(OrderHistory)
+    difference_count = models.IntegerField()
