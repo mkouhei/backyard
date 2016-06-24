@@ -51,7 +51,7 @@ class PriceHistory(BaseHistory):
     """Price histories."""
     product = models.ForeignKey(Product)
     shop = models.ForeignKey(Shop)
-    registred_date = models.DateField()
+    registered_date = models.DateField()
     price = models.IntegerField()
 
 
