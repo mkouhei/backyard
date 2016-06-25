@@ -81,7 +81,7 @@ class OrderHistory(BaseHistory):
 class ReceiveHistory(BaseHistory):
     """Receive histories."""
     received_at = models.DateTimeField()
-    received_item = models.ForeignKey(OrderHistory)
+    received_item = models.ForeignKey(Product)
     difference_count = models.IntegerField()
 
     class Meta(object):
