@@ -87,3 +87,10 @@ class ReceiveHistory(BaseHistory):
     class Meta(object):
         """Meta data."""
         unique_together = ('received_item', 'received_at')
+
+
+class UnpackHistory(BaseHistory):
+    """Unpack histories."""
+    unpacked_at = models.DateTimeField()
+    unpacked_item = models.ForeignKey(Product)
+    count = models.IntegerField()
