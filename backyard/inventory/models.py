@@ -26,11 +26,17 @@ class Maker(BaseModel):
     """Maker."""
     name = models.CharField(unique=True, max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class Product(BaseModel):
     """Products."""
     name = models.CharField(unique=True, max_length=255)
     maker = models.ForeignKey(Maker)
+
+    def __str__(self):
+        return self.name
 
 
 class ExternalAccount(BaseModel):
@@ -39,12 +45,18 @@ class ExternalAccount(BaseModel):
     encrypted_password = models.CharField(max_length=255)
     email = models.EmailField()
 
+    def __str__(self):
+        return self.name
+
 
 class Shop(BaseModel):
     """External Shop."""
     name = models.CharField(unique=True, max_length=255)
     url = models.URLField(unique=True)
     user = models.ForeignKey(ExternalAccount)
+
+    def __str__(self):
+        return self.name
 
 
 class PriceHistory(BaseHistory):
@@ -58,11 +70,8 @@ class PriceHistory(BaseHistory):
         """Meta data."""
         unique_together = ('product', 'registered_date')
 
-
-class Inventory(BaseModel):
-    """Inventory."""
-    product = models.ForeignKey(Product)
-    amount = models.IntegerField()
+    def __str__(self):
+        return '{0} {1}'.format(self.product, self.price)
 
 
 class OrderHistory(BaseHistory):
@@ -77,6 +86,15 @@ class OrderHistory(BaseHistory):
         """Meta data."""
         unique_together = ('order_item', 'ordered_at')
 
+    def __str__(self):
+        return '{0} * {1} ({2})'.format(self.order_item,
+                                        self.count,
+                                        self.ordered_at)
+
+    def amount(self):
+        """amount."""
+        return self.order_item.price * self.count
+
 
 class ReceiveHistory(BaseHistory):
     """Receive histories."""
@@ -88,9 +106,18 @@ class ReceiveHistory(BaseHistory):
         """Meta data."""
         unique_together = ('received_item', 'received_at')
 
+    def __str__(self):
+        return '{0}'.format(self.received_item)
+
 
 class UnpackHistory(BaseHistory):
     """Unpack histories."""
     unpacked_at = models.DateTimeField()
     unpacked_item = models.ForeignKey(Product)
     count = models.IntegerField()
+
+
+class Inventory(BaseModel):
+    """Inventory."""
+    product = models.ForeignKey(Product)
+    amount = models.IntegerField()
