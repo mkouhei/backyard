@@ -5,4 +5,5 @@ ignore=setup.py,docs/source/conf.py,backyard/core/settings/development.py,backya
 disable=invalid-name,
     too-few-public-methods,
     no-member,
-    unused-argument
+    unused-argument,
+    no-self-use
