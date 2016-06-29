@@ -50,8 +50,7 @@ class PriceHistoryAdmin(admin.ModelAdmin):
                     'shop_name',
                     'price',
                     'currency_unit',
-                    'created_at',
-                    'updated_at')
+                    'created_at')
 
     def product_name(self, obj):
         """product name."""
@@ -78,8 +77,7 @@ class OrderHistoryAdmin(admin.ModelAdmin):
                     'product_price',
                     'count',
                     'amount',
-                    'created_at',
-                    'updated_at')
+                    'created_at')
 
     def order_item_name(self, obj):
         """order item name."""

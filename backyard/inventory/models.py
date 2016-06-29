@@ -15,7 +15,6 @@ class BaseModel(models.Model):
 class BaseHistory(BaseModel):
     """Abstract History base model."""
     created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta(object):
         """meta class."""
