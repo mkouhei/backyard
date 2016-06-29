@@ -61,10 +61,18 @@ class Shop(BaseModel):
 
 class PriceHistory(BaseHistory):
     """Price histories."""
+    CURRENCY_UNIT = (
+        ('JPY', 'JPY'),
+        ('USD', 'USD'),
+        ('EUR', 'EUR'),
+    )
     product = models.ForeignKey(Product)
     shop = models.ForeignKey(Shop)
     registered_date = models.DateField()
     price = models.IntegerField()
+    currency_unit = models.CharField(max_length=10,
+                                     choices=CURRENCY_UNIT,
+                                     default='JPY')
 
     class Meta(object):
         """Meta data."""
@@ -77,10 +85,8 @@ class PriceHistory(BaseHistory):
 class OrderHistory(BaseHistory):
     """Order histories."""
     ordered_at = models.DateTimeField()
-    order_item = models.ForeignKey(Product)
-    price = models.ForeignKey(PriceHistory)
+    order_item = models.ForeignKey(PriceHistory)
     count = models.IntegerField()
-    amount = models.IntegerField()
 
     class Meta(object):
         """Meta data."""
@@ -99,8 +105,8 @@ class OrderHistory(BaseHistory):
 class ReceiveHistory(BaseHistory):
     """Receive histories."""
     received_at = models.DateTimeField()
-    received_item = models.ForeignKey(Product)
-    difference_count = models.IntegerField()
+    received_item = models.ForeignKey(OrderHistory)
+    difference_count = models.IntegerField(default=0)
 
     class Meta(object):
         """Meta data."""
