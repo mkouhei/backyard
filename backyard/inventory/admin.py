@@ -97,6 +97,11 @@ class ReceiveHistoryAdmin(admin.ModelAdmin):
     list_display = ('received_at', 'received_item', 'difference_count')
 
 
+class UnpackHistoryAdmin(admin.ModelAdmin):
+    """unpacked histories."""
+    list_display = ('unpacked_at', 'unpacked_item', 'count')
+
+
 admin.site.register(Maker, MakerAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ExternalAccount, ExternalAccountAdmin)
@@ -105,4 +110,4 @@ admin.site.register(PriceHistory, PriceHistoryAdmin)
 admin.site.register(Inventory, InventoryAdmin)
 admin.site.register(OrderHistory, OrderHistoryAdmin)
 admin.site.register(ReceiveHistory, ReceiveHistoryAdmin)
-admin.site.register(UnpackHistory)
+admin.site.register(UnpackHistory, UnpackHistoryAdmin)

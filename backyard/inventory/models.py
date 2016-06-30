@@ -121,6 +121,9 @@ class UnpackHistory(BaseHistory):
     unpacked_item = models.ForeignKey(Product)
     count = models.IntegerField()
 
+    def __str__(self):
+        return self.unpacked_item.name
+
 
 class Inventory(BaseModel):
     """Inventory."""
