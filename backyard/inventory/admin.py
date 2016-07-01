@@ -102,6 +102,10 @@ class UnpackHistoryAdmin(admin.ModelAdmin):
     list_display = ('unpacked_at', 'unpacked_item', 'count')
 
 
+class InventoryAdmin(admin.ModelAdmin):
+    list_display = ('product', 'amount')
+
+
 admin.site.register(Maker, MakerAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ExternalAccount, ExternalAccountAdmin)

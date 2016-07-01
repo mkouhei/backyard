@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """backyard.inventory.models."""
 from django.db import models
+from django.db.models import Q
 
 
 class BaseModel(models.Model):
@@ -128,4 +129,9 @@ class UnpackHistory(BaseHistory):
 class Inventory(BaseModel):
     """Inventory."""
     product = models.ForeignKey(Product)
-    amount = models.IntegerField()
+
+    def amount(self):
+        ordered_item = OrderHistory.objects.filter(Q(order_item__product=self.product))[0]
+        received_item = ReceiveHistory.objects.filter(Q(received_item=ordered_item))[0]
+        unpacked_count = UnpackHistory.objects.filter(Q(unpacked_item=self.product))[0].count
+        return ordered_item.count - received_item.difference_count - unpacked_count
