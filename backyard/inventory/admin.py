@@ -63,7 +63,7 @@ class PriceHistoryAdmin(admin.ModelAdmin):
 
 class InventoryAdmin(admin.ModelAdmin):
     """Inventories list view."""
-    list_display = ('product_name',)
+    list_display = ('product_name', 'amount')
 
     def product_name(self, obj):
         """product name."""
@@ -100,10 +100,6 @@ class ReceiveHistoryAdmin(admin.ModelAdmin):
 class UnpackHistoryAdmin(admin.ModelAdmin):
     """unpacked histories."""
     list_display = ('unpacked_at', 'unpacked_item', 'count')
-
-
-class InventoryAdmin(admin.ModelAdmin):
-    list_display = ('product', 'amount')
 
 
 admin.site.register(Maker, MakerAdmin)
