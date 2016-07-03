@@ -131,7 +131,13 @@ class Inventory(BaseModel):
     product = models.ForeignKey(Product)
 
     def amount(self):
-        ordered_item = OrderHistory.objects.filter(Q(order_item__product=self.product))[0]
-        received_item = ReceiveHistory.objects.filter(Q(received_item=ordered_item))[0]
-        unpacked_count = UnpackHistory.objects.filter(Q(unpacked_item=self.product))[0].count
-        return ordered_item.count - received_item.difference_count - unpacked_count
+        """amount."""
+        ordered_item = OrderHistory.objects.filter(
+            Q(order_item__product=self.product))[0]
+        received_item = ReceiveHistory.objects.filter(
+            Q(received_item=ordered_item))[0]
+        unpacked_count = UnpackHistory.objects.filter(
+            Q(unpacked_item=self.product))[0].count
+        return (ordered_item.count -
+                received_item.difference_count -
+                unpacked_count)
