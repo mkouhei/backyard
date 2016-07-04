@@ -63,7 +63,7 @@ class PriceHistoryAdmin(admin.ModelAdmin):
 
 class InventoryAdmin(admin.ModelAdmin):
     """Inventories list view."""
-    list_display = ('product_name', 'amount')
+    list_display = ('product_name', 'quantity')
 
     def product_name(self, obj):
         """product name."""
@@ -75,7 +75,7 @@ class OrderHistoryAdmin(admin.ModelAdmin):
     list_display = ('ordered_at',
                     'order_item_name',
                     'product_price',
-                    'count',
+                    'quantity',
                     'amount',
                     'created_at')
 
@@ -94,12 +94,12 @@ class OrderHistoryAdmin(admin.ModelAdmin):
 
 class ReceiveHistoryAdmin(admin.ModelAdmin):
     """receive histories."""
-    list_display = ('received_at', 'received_item', 'difference_count')
+    list_display = ('received_at', 'received_item', 'difference_quantity')
 
 
 class UnpackHistoryAdmin(admin.ModelAdmin):
     """unpacked histories."""
-    list_display = ('unpacked_at', 'unpacked_item', 'count')
+    list_display = ('unpacked_at', 'unpacked_item', 'quantity')
 
 
 admin.site.register(Maker, MakerAdmin)

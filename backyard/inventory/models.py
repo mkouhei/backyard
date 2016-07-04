@@ -86,7 +86,7 @@ class OrderHistory(BaseHistory):
     """Order histories."""
     ordered_at = models.DateTimeField()
     order_item = models.ForeignKey(PriceHistory)
-    count = models.IntegerField()
+    quantity = models.IntegerField()
 
     class Meta(object):
         """Meta data."""
@@ -94,19 +94,19 @@ class OrderHistory(BaseHistory):
 
     def __str__(self):
         return '{0} * {1} ({2})'.format(self.order_item,
-                                        self.count,
+                                        self.quantity,
                                         self.ordered_at)
 
     def amount(self):
         """amount."""
-        return self.order_item.price * self.count
+        return self.order_item.price * self.quantity
 
 
 class ReceiveHistory(BaseHistory):
     """Receive histories."""
     received_at = models.DateTimeField()
     received_item = models.ForeignKey(OrderHistory)
-    difference_count = models.IntegerField(default=0)
+    difference_quantity = models.IntegerField(default=0)
 
     class Meta(object):
         """Meta data."""
@@ -120,7 +120,7 @@ class UnpackHistory(BaseHistory):
     """Unpack histories."""
     unpacked_at = models.DateTimeField()
     unpacked_item = models.ForeignKey(Product)
-    count = models.IntegerField()
+    quantity = models.IntegerField()
 
     def __str__(self):
         return self.unpacked_item.name
@@ -130,14 +130,14 @@ class Inventory(BaseModel):
     """Inventory."""
     product = models.ForeignKey(Product)
 
-    def amount(self):
-        """amount."""
+    def quantity(self):
+        """quantity."""
         ordered_item = OrderHistory.objects.filter(
             Q(order_item__product=self.product))[0]
         received_item = ReceiveHistory.objects.filter(
             Q(received_item=ordered_item))[0]
-        unpacked_count = UnpackHistory.objects.filter(
-            Q(unpacked_item=self.product))[0].count
-        return (ordered_item.count -
-                received_item.difference_count -
-                unpacked_count)
+        unpacked_quantity = UnpackHistory.objects.filter(
+            Q(unpacked_item=self.product))[0].quantity
+        return (ordered_item.quantity -
+                received_item.difference_quantity -
+                unpacked_quantity)
