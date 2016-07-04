@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """backyard.inventory.models."""
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Sum
 
 
 class BaseModel(models.Model):
@@ -132,12 +132,26 @@ class Inventory(BaseModel):
 
     def quantity(self):
         """quantity."""
+        # select sum(quantity) from inventory_orderhistory
+        # where order_item_id = 1;
+        ordered_quantity = OrderHistory.objects.filter(
+            Q(order_item__product=self.product)).aggregate(Sum('quantity'))
+
+        # select sum(r.difference_quantity)
+        # from inventory_receivehistory as r
+        # inner join inventory_orderhistory as o
+        # on (r.received_item_id = o.id) where o.order_item_id = 1;
         ordered_item = OrderHistory.objects.filter(
-            Q(order_item__product=self.product))[0]
+            Q(order_item__product=self.product)
+        ).values('order_item__product').distinct()
         received_item = ReceiveHistory.objects.filter(
-            Q(received_item=ordered_item))[0]
+            Q(received_item=ordered_item)
+        ).aggregate(Sum('difference_quantity'))
+
+        # select sum(quantity) from inventory_unpackhistory
+        # where unpacked_item_id = 1;
         unpacked_quantity = UnpackHistory.objects.filter(
-            Q(unpacked_item=self.product))[0].quantity
-        return (ordered_item.quantity +
-                received_item.difference_quantity -
-                unpacked_quantity)
+            Q(unpacked_item=self.product)).aggregate(Sum('quantity'))
+        return (ordered_quantity.get('quantity__sum') +
+                received_item.get('difference_quantity__sum') -
+                unpacked_quantity.get('quantity__sum'))
