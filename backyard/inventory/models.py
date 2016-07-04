@@ -138,6 +138,6 @@ class Inventory(BaseModel):
             Q(received_item=ordered_item))[0]
         unpacked_quantity = UnpackHistory.objects.filter(
             Q(unpacked_item=self.product))[0].quantity
-        return (ordered_item.quantity -
+        return (ordered_item.quantity +
                 received_item.difference_quantity -
                 unpacked_quantity)
