@@ -132,15 +132,20 @@ class Inventory(BaseModel):
 
     def quantity(self):
         """quantity."""
-        # select sum(quantity) from inventory_orderhistory
-        # where order_item_id = 1;
+        # select sum(o.quantity) from inventory_orderhistory as o
+        # inner join inventory_pricehistory as p
+        # on o.order_item_id = p.id
+        # where p.product_id = 1;
         ordered_quantity = OrderHistory.objects.filter(
             Q(order_item__product=self.product)).aggregate(Sum('quantity'))
 
-        # select sum(r.difference_quantity)
-        # from inventory_receivehistory as r
-        # inner join inventory_orderhistory as o
-        # on (r.received_item_id = o.id) where o.order_item_id = 1;
+        # select product_id, sum(difference_quantity) inventory_receivehistory from
+        # (select distinct id, product_id, r.difference_quantity
+        # from inventory_receivehistory as r join
+        # (select p.product_id as product_id, o.order_item_id as order_item_id
+        # from inventory_orderhistory as o join inventory_pricehistory as p
+        # on o.order_item_id = p.id ) as t
+        # on t.order_item_id = r.received_item_id where t.product_id =1);
         ordered_item = OrderHistory.objects.filter(
             Q(order_item__product=self.product)
         ).values('order_item__product').distinct()
