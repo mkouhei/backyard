@@ -132,7 +132,24 @@ class Inventory(BaseModel):
 
     def quantity(self):
         """quantity."""
-        # select sum(o.quantity) from inventory_orderhistory as o
+        # select product_id, ordered + difference - unpacked
+        # from (select product_id, ordered, unpacked
+        # from (select unpacked_item_id, sum(u.quantity) as unpacked
+        # from inventory_unpackhistory as u) as t_u
+        # inner join (select product_id, sum(o.quantity) as ordered
+        # from inventory_orderhistory as o
+        # inner join inventory_pricehistory as p on o.order_item_id = p.id) as t_o
+        # on t_u.unpacked_item_id = t_o.product_id) as t0
+        # inner join (select receive_item_id, sum(difference_quantity) as difference
+        # from (select distinct id, product_id as receive_item_id, r.difference_quantity
+        # from inventory_receivehistory as r join
+        # (select p.product_id as product_id, o.order_item_id as order_item_id
+        # from inventory_orderhistory as o join inventory_pricehistory as p
+        # on o.order_item_id = p.id ) as t
+        # on t.order_item_id = r.received_item_id)) as t1
+        # on t0.product_id = t1.receive_item_id;
+        
+        # select product_id, sum(o.quantity) from inventory_orderhistory as o
         # inner join inventory_pricehistory as p
         # on o.order_item_id = p.id
         # where p.product_id = 1;
@@ -153,7 +170,8 @@ class Inventory(BaseModel):
             Q(received_item=ordered_item)
         ).aggregate(Sum('difference_quantity'))
 
-        # select sum(quantity) from inventory_unpackhistory
+        # select unpacked_item_id as product_id sum(quantity)
+        # from inventory_unpackhistory
         # where unpacked_item_id = 1;
         unpacked_quantity = UnpackHistory.objects.filter(
             Q(unpacked_item=self.product)).aggregate(Sum('quantity'))
