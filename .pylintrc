@@ -6,5 +6,4 @@ disable=invalid-name,
     too-few-public-methods,
     no-member,
     unused-argument,
-    no-self-use,
-    super-init-not-called
+    no-self-use
