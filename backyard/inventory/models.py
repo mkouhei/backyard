@@ -2,6 +2,7 @@
 """backyard.inventory.models."""
 from django.db import models
 from django.db.models import Q, Sum
+from django.db.models.signals import post_save
 
 
 class BaseModel(models.Model):
@@ -16,6 +17,7 @@ class BaseModel(models.Model):
 class BaseHistory(BaseModel):
     """Abstract History base model."""
     created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta(object):
         """meta class."""
@@ -84,7 +86,7 @@ class PriceHistory(BaseHistory):
 
 class OrderHistory(BaseHistory):
     """Order histories."""
-    ordered_at = models.DateTimeField()
+    ordered_at = models.DateTimeField(auto_now=True)
     order_item = models.ForeignKey(PriceHistory)
     quantity = models.IntegerField()
 
@@ -104,9 +106,9 @@ class OrderHistory(BaseHistory):
 
 class ReceiveHistory(BaseHistory):
     """Receive histories."""
-    received_at = models.DateTimeField()
+    received_at = models.DateTimeField(auto_now=True)
     received_item = models.ForeignKey(OrderHistory)
-    difference_quantity = models.IntegerField(default=0)
+    quantity = models.IntegerField()
 
     class Meta(object):
         """Meta data."""
@@ -116,9 +118,15 @@ class ReceiveHistory(BaseHistory):
         return '{0}'.format(self.received_item)
 
 
+def received_receiver(sender, instance, created, **kwargs):
+    """unreceived item."""
+    ReceiveHistory(received_item=instance, quantity=0).save()
+post_save.connect(received_receiver, sender=OrderHistory)
+
+
 class UnpackHistory(BaseHistory):
     """Unpack histories."""
-    unpacked_at = models.DateTimeField()
+    unpacked_at = models.DateTimeField(auto_now=True)
     unpacked_item = models.ForeignKey(Product)
     quantity = models.IntegerField()
 
@@ -126,38 +134,29 @@ class UnpackHistory(BaseHistory):
         return self.unpacked_item.name
 
 
+def unpacked_receiver(sender, instance, created, **kwargs):
+    """unpack item."""
+    UnpackHistory(unpacked_item=instance,
+                  quantity=0).save()
+post_save.connect(unpacked_receiver, sender=Product)
+
+
 class Inventory(BaseModel):
     """Inventory."""
     product = models.ForeignKey(Product)
 
-    def quantity(self):
+    def remain_quantity(self):
         """quantity."""
-        # select product_id, ordered + difference - unpacked
-        # from (select product_id, ordered, unpacked
-        # from (select unpacked_item_id, sum(u.quantity) as unpacked
-        # from inventory_unpackhistory as u) as t_u
-        # inner join (select product_id, sum(o.quantity) as ordered
-        # from inventory_orderhistory as o
-        # inner join inventory_pricehistory as p on o.order_item_id = p.id) as t_o
-        # on t_u.unpacked_item_id = t_o.product_id) as t0
-        # inner join (select receive_item_id, sum(difference_quantity) as difference
-        # from (select distinct id, product_id as receive_item_id, r.difference_quantity
-        # from inventory_receivehistory as r join
-        # (select p.product_id as product_id, o.order_item_id as order_item_id
-        # from inventory_orderhistory as o join inventory_pricehistory as p
-        # on o.order_item_id = p.id ) as t
-        # on t.order_item_id = r.received_item_id)) as t1
-        # on t0.product_id = t1.receive_item_id;
-        
         # select product_id, sum(o.quantity) from inventory_orderhistory as o
         # inner join inventory_pricehistory as p
         # on o.order_item_id = p.id
         # where p.product_id = 1;
         ordered_quantity = OrderHistory.objects.filter(
-            Q(order_item__product=self.product)).aggregate(Sum('quantity'))
+            Q(order_item__product=self.product)
+        ).aggregate(Sum('quantity')).get('quantity__sum')
 
-        # select product_id, sum(difference_quantity) inventory_receivehistory from
-        # (select distinct id, product_id, r.difference_quantity
+        # select product_id, sum(quantity) inventory_receivehistory from
+        # (select distinct id, product_id, r.quantity
         # from inventory_receivehistory as r join
         # (select p.product_id as product_id, o.order_item_id as order_item_id
         # from inventory_orderhistory as o join inventory_pricehistory as p
@@ -166,15 +165,25 @@ class Inventory(BaseModel):
         ordered_item = OrderHistory.objects.filter(
             Q(order_item__product=self.product)
         ).values('order_item__product').distinct()
-        received_item = ReceiveHistory.objects.filter(
+
+        received_quantity = ReceiveHistory.objects.filter(
             Q(received_item=ordered_item)
-        ).aggregate(Sum('difference_quantity'))
+        ).aggregate(Sum('quantity')).get('quantity__sum')
 
         # select unpacked_item_id as product_id sum(quantity)
         # from inventory_unpackhistory
         # where unpacked_item_id = 1;
         unpacked_quantity = UnpackHistory.objects.filter(
-            Q(unpacked_item=self.product)).aggregate(Sum('quantity'))
-        return (ordered_quantity.get('quantity__sum') +
-                received_item.get('difference_quantity__sum') -
-                unpacked_quantity.get('quantity__sum'))
+            Q(unpacked_item=self.product)
+        ).aggregate(Sum('quantity')).get('quantity__sum')
+
+        if ordered_quantity < received_quantity:
+            return 0
+        else:
+            return received_quantity - unpacked_quantity
+
+
+def inventory_receiver(sender, instance, created, **kwargs):
+    """inventory item."""
+    Inventory(product=instance).save()
+post_save.connect(inventory_receiver, sender=Product)

@@ -63,7 +63,7 @@ class PriceHistoryAdmin(admin.ModelAdmin):
 
 class InventoryAdmin(admin.ModelAdmin):
     """Inventories list view."""
-    list_display = ('product_name', 'quantity')
+    list_display = ('product_name', 'remain_quantity')
 
     def product_name(self, obj):
         """product name."""
@@ -94,7 +94,7 @@ class OrderHistoryAdmin(admin.ModelAdmin):
 
 class ReceiveHistoryAdmin(admin.ModelAdmin):
     """receive histories."""
-    list_display = ('received_at', 'received_item', 'difference_quantity')
+    list_display = ('received_at', 'received_item', 'quantity')
 
 
 class UnpackHistoryAdmin(admin.ModelAdmin):
