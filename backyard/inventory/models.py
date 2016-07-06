@@ -98,10 +98,6 @@ class OrderHistory(BaseHistory):
                                         self.quantity,
                                         self.ordered_at)
 
-    def amount(self):
-        """amount."""
-        return self.order_item.price * self.quantity
-
 
 class ReceiveHistory(BaseHistory):
     """Receive histories."""
