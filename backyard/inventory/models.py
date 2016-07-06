@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """backyard.inventory.models."""
 from django.db import models
-from django.db.models import Q, Sum
 from django.db.models.signals import post_save
 
 
@@ -144,43 +143,6 @@ post_save.connect(unpacked_receiver, sender=Product)
 class Inventory(BaseModel):
     """Inventory."""
     product = models.ForeignKey(Product)
-
-    def remain_quantity(self):
-        """quantity."""
-        # select product_id, sum(o.quantity) from inventory_orderhistory as o
-        # inner join inventory_pricehistory as p
-        # on o.order_item_id = p.id
-        # where p.product_id = 1;
-        ordered_quantity = OrderHistory.objects.filter(
-            Q(order_item__product=self.product)
-        ).aggregate(Sum('quantity')).get('quantity__sum')
-
-        # select product_id, sum(quantity) inventory_receivehistory from
-        # (select distinct id, product_id, r.quantity
-        # from inventory_receivehistory as r join
-        # (select p.product_id as product_id, o.order_item_id as order_item_id
-        # from inventory_orderhistory as o join inventory_pricehistory as p
-        # on o.order_item_id = p.id ) as t
-        # on t.order_item_id = r.received_item_id where t.product_id =1);
-        ordered_item = OrderHistory.objects.filter(
-            Q(order_item__product=self.product)
-        ).values('order_item__product').distinct()
-
-        received_quantity = ReceiveHistory.objects.filter(
-            Q(received_item=ordered_item)
-        ).aggregate(Sum('quantity')).get('quantity__sum')
-
-        # select unpacked_item_id as product_id sum(quantity)
-        # from inventory_unpackhistory
-        # where unpacked_item_id = 1;
-        unpacked_quantity = UnpackHistory.objects.filter(
-            Q(unpacked_item=self.product)
-        ).aggregate(Sum('quantity')).get('quantity__sum')
-
-        if ordered_quantity < received_quantity:
-            return 0
-        else:
-            return received_quantity - unpacked_quantity
 
 
 def inventory_receiver(sender, instance, created, **kwargs):

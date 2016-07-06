@@ -9,6 +9,7 @@ from backyard.inventory.models import (Maker,
                                        OrderHistory,
                                        ReceiveHistory,
                                        UnpackHistory)
+from backyard.inventory.queryset.inventory import QuantityQuerySet
 
 
 class MakerAdmin(admin.ModelAdmin):
@@ -63,11 +64,31 @@ class PriceHistoryAdmin(admin.ModelAdmin):
 
 class InventoryAdmin(admin.ModelAdmin):
     """Inventories list view."""
-    list_display = ('product_name', 'remain_quantity')
+    list_display = ('product_name',
+                    'ordered',
+                    'received',
+                    'unpacked',
+                    'remain')
 
     def product_name(self, obj):
         """product name."""
         return obj.product.name
+
+    def ordered(self, obj):
+        """ordred quantity."""
+        return QuantityQuerySet(obj).ordered_quantity()
+
+    def received(self, obj):
+        """received quantity."""
+        return QuantityQuerySet(obj).received_quantity()
+
+    def unpacked(self, obj):
+        """unpacked quantity."""
+        return QuantityQuerySet(obj).unpacked_quantity()
+
+    def remain(self, obj):
+        """remain quantity."""
+        return QuantityQuerySet(obj).remain_quantity()
 
 
 class OrderHistoryAdmin(admin.ModelAdmin):
