@@ -16,13 +16,13 @@ class QuantityQuerySet(object):
     def ordered_item(self):
         """ordered item."""
         return OrderHistory.objects.filter(
-            Q(order_item__product=self.obj.product)
-        ).values('order_item__product').distinct()
+            Q(ordered_item__product=self.obj.product)
+        ).values('ordered_item__product').distinct()
 
     def ordered_quantity(self):
         """ordered quantity."""
         return OrderHistory.objects.filter(
-            Q(order_item__product=self.obj.product)
+            Q(ordered_item__product=self.obj.product)
         ).aggregate(Sum('quantity')).get('quantity__sum')
 
     def received_quantity(self):
