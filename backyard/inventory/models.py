@@ -8,6 +8,14 @@ from django.contrib.auth.models import User, Group
 class BaseModel(models.Model):
     """Abstract base model."""
     id = models.AutoField(primary_key=True)
+
+    class Meta(object):
+        """meta class."""
+        abstract = True
+
+
+class OwnerModel(BaseModel):
+    """Abstract owner model."""
     owner = models.ForeignKey(User)
     group = models.ForeignKey(Group)
 
@@ -16,7 +24,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class BaseHistory(BaseModel):
+class BaseHistory(OwnerModel):
     """Abstract History base model."""
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -43,21 +51,21 @@ class Product(BaseModel):
         return self.name
 
 
-class ExternalAccount(BaseModel):
-    """Online shop account."""
-    name = models.CharField(max_length=255)
-    encrypted_password = models.CharField(max_length=255)
-    email = models.EmailField()
+class Shop(BaseModel):
+    """External Shop."""
+    name = models.CharField(unique=True, max_length=255)
+    url = models.URLField(unique=True)
 
     def __str__(self):
         return self.name
 
 
-class Shop(BaseModel):
-    """External Shop."""
-    name = models.CharField(unique=True, max_length=255)
-    url = models.URLField(unique=True)
-    user = models.ForeignKey(ExternalAccount)
+class ExternalAccount(OwnerModel):
+    """Online shop account."""
+    name = models.CharField(max_length=255)
+    encrypted_password = models.CharField(max_length=255)
+    email = models.EmailField()
+    shop = models.ForeignKey(Shop)
 
     def __str__(self):
         return self.name
@@ -119,7 +127,7 @@ class ReceiveHistory(BaseHistory):
 def received_receiver(sender, instance, created, **kwargs):
     """unreceived item."""
     ReceiveHistory(received_item=instance, quantity=0).save()
-post_save.connect(received_receiver, sender=OrderHistory)
+# post_save.connect(received_receiver, sender=OrderHistory)
 
 
 class UnpackHistory(BaseHistory):
@@ -136,7 +144,7 @@ def unpacked_receiver(sender, instance, created, **kwargs):
     """unpack item."""
     UnpackHistory(unpacked_item=instance,
                   quantity=0).save()
-post_save.connect(unpacked_receiver, sender=Product)
+# post_save.connect(unpacked_receiver, sender=Product)
 
 
 class Inventory(BaseModel):
@@ -147,4 +155,4 @@ class Inventory(BaseModel):
 def inventory_receiver(sender, instance, created, **kwargs):
     """inventory item."""
     Inventory(product=instance).save()
-post_save.connect(inventory_receiver, sender=Product)
+# post_save.connect(inventory_receiver, sender=Product)
