@@ -38,11 +38,7 @@ class ExternalAccountAdmin(admin.ModelAdmin):
 
 class ShopAdmin(admin.ModelAdmin):
     """customize Shop list view."""
-    list_display = ('name', 'url', 'user_name')
-
-    def user_name(self, obj):
-        """user name."""
-        return obj.user.name
+    list_display = ('name', 'url')
 
 
 class PriceHistoryAdmin(admin.ModelAdmin):

@@ -24,7 +24,17 @@ class OwnerModel(BaseModel):
         abstract = True
 
 
-class BaseHistory(OwnerModel):
+class BaseHistory(BaseModel):
+    """Abstract History base model."""
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta(object):
+        """meta class."""
+        abstract = True
+
+
+class OwnerHistory(OwnerModel):
     """Abstract History base model."""
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -94,7 +104,7 @@ class PriceHistory(BaseHistory):
         return '{0} {1}'.format(self.product, self.price)
 
 
-class OrderHistory(BaseHistory):
+class OrderHistory(OwnerHistory):
     """Order histories."""
     ordered_at = models.DateTimeField(auto_now=True)
     ordered_item = models.ForeignKey(PriceHistory)
@@ -110,7 +120,7 @@ class OrderHistory(BaseHistory):
                                         self.ordered_at)
 
 
-class ReceiveHistory(BaseHistory):
+class ReceiveHistory(OwnerHistory):
     """Receive histories."""
     received_at = models.DateTimeField(auto_now=True)
     received_item = models.ForeignKey(OrderHistory)
@@ -126,11 +136,14 @@ class ReceiveHistory(BaseHistory):
 
 def received_receiver(sender, instance, created, **kwargs):
     """unreceived item."""
-    ReceiveHistory(received_item=instance, quantity=0).save()
+    ReceiveHistory(received_item=instance,
+                   owner=instance.owner,
+                   group=instance.group,
+                   quantity=0).save()
 # post_save.connect(received_receiver, sender=OrderHistory)
 
 
-class UnpackHistory(BaseHistory):
+class UnpackHistory(OwnerHistory):
     """Unpack histories."""
     unpacked_at = models.DateTimeField(auto_now=True)
     unpacked_item = models.ForeignKey(Product)
@@ -142,9 +155,11 @@ class UnpackHistory(BaseHistory):
 
 def unpacked_receiver(sender, instance, created, **kwargs):
     """unpack item."""
-    UnpackHistory(unpacked_item=instance,
+    UnpackHistory(unpacked_item=instance.ordered_item.product,
+                  owner=instance.owner,
+                  group=instance.group,
                   quantity=0).save()
-# post_save.connect(unpacked_receiver, sender=Product)
+# post_save.connect(unpacked_receiver, sender=OrderHistory)
 
 
 class Inventory(BaseModel):
@@ -154,5 +169,7 @@ class Inventory(BaseModel):
 
 def inventory_receiver(sender, instance, created, **kwargs):
     """inventory item."""
-    Inventory(product=instance).save()
-# post_save.connect(inventory_receiver, sender=Product)
+    Inventory(product=instance.ordered_item.product,
+              owner=instance.owner,
+              group=instance.group).save()
+# post_save.connect(inventory_receiver, sender=OrderHistory)
