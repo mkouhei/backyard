@@ -140,7 +140,7 @@ def received_receiver(sender, instance, created, **kwargs):
                    owner=instance.owner,
                    group=instance.group,
                    quantity=0).save()
-# post_save.connect(received_receiver, sender=OrderHistory)
+post_save.connect(received_receiver, sender=OrderHistory)
 
 
 class UnpackHistory(OwnerHistory):
@@ -159,10 +159,10 @@ def unpacked_receiver(sender, instance, created, **kwargs):
                   owner=instance.owner,
                   group=instance.group,
                   quantity=0).save()
-# post_save.connect(unpacked_receiver, sender=OrderHistory)
+post_save.connect(unpacked_receiver, sender=OrderHistory)
 
 
-class Inventory(BaseModel):
+class Inventory(OwnerModel):
     """Inventory."""
     product = models.ForeignKey(Product)
 
@@ -172,4 +172,4 @@ def inventory_receiver(sender, instance, created, **kwargs):
     Inventory(product=instance.ordered_item.product,
               owner=instance.owner,
               group=instance.group).save()
-# post_save.connect(inventory_receiver, sender=OrderHistory)
+post_save.connect(inventory_receiver, sender=OrderHistory)
