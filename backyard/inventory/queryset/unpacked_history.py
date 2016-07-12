@@ -31,6 +31,6 @@ class UnpackQuerySet(object):
     def remain_quantity(self):
         """remain quantity."""
         if self.ordered_quantity() >= self.received_quantity():
-            return self.received_quantity() - self.obj.quantity
+            return self.received_quantity() - self.unpacked_quantity()
         else:
             return 0
