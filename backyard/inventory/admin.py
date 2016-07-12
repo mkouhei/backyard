@@ -11,6 +11,7 @@ from backyard.inventory.models import (Maker,
                                        UnpackHistory)
 from backyard.inventory.queryset.inventory import QuantityQuerySet
 from backyard.inventory.queryset.order_history import OrderQuerySet
+from backyard.inventory.queryset.unpacked_history import UnpackQuerySet
 
 
 class MakerAdmin(admin.ModelAdmin):
@@ -117,7 +118,28 @@ class ReceiveHistoryAdmin(admin.ModelAdmin):
 
 class UnpackHistoryAdmin(admin.ModelAdmin):
     """unpacked histories."""
-    list_display = ('unpacked_at', 'unpacked_item', 'quantity')
+    list_display = ('unpacked_at',
+                    'unpacked_item',
+                    'ordered',
+                    'received',
+                    'unpacked',
+                    'remain')
+
+    def ordered(self, obj):
+        """ordered quantity."""
+        return UnpackQuerySet(obj).ordered_quantity()
+
+    def unpacked(self, obj):
+        """unpacked quantity."""
+        return UnpackQuerySet(obj).unpacked_quantity()
+
+    def received(self, obj):
+        """received quantity."""
+        return UnpackQuerySet(obj).received_quantity()
+
+    def remain(self, obj):
+        """remain quantity."""
+        return UnpackQuerySet(obj).remain_quantity()
 
 
 admin.site.register(Maker, MakerAdmin)
