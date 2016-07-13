@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 """backyard.inventory.models."""
-from django.db import models
-from django.db.models.signals import post_save
+from copy import copy
 from django.contrib.auth.models import User, Group
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.db.models import Q, Sum
+from django.db.models.signals import pre_save, post_save
+from django.utils.translation import ugettext_lazy as _
 
 
 class BaseModel(models.Model):
@@ -134,6 +138,17 @@ class ReceiveHistory(OwnerHistory):
         return '{0}'.format(self.received_item)
 
 
+def validate_receive_quantity(sender, instance, **kwargs):
+    """validate receive quantity."""
+    if instance.quantity > instance.received_item.quantity:
+        raise ValidationError(
+            _('%(received)s is not over than ordered %(ordered)s'),
+            params={'received': instance.quantity,
+                    'ordered': instance.received_item.quantity},
+        )
+pre_save.connect(validate_receive_quantity, sender=ReceiveHistory)
+
+
 def received_receiver(sender, instance, created, **kwargs):
     """unreceived item."""
     ReceiveHistory(received_item=instance,
@@ -149,8 +164,33 @@ class UnpackHistory(OwnerHistory):
     unpacked_item = models.ForeignKey(Product)
     quantity = models.IntegerField()
 
+    def __init__(self, *args, **kwargs):
+        super(UnpackHistory, self).__init__(*args, **kwargs)
+        self.old = copy(self)
+
     def __str__(self):
         return self.unpacked_item.name
+
+
+def validate_unpack_quantity(sender, instance, **kwargs):
+    """validate unpacke quantity."""
+    ordered = OrderHistory.objects.filter(
+        Q(ordered_item__product=instance.unpacked_item)
+    ).aggregate(Sum('quantity')).get('quantity__sum')
+    received = ReceiveHistory.objects.filter(
+        Q(received_item__ordered_item__product=instance.unpacked_item)
+    ).aggregate(Sum('quantity')).get('quantity__sum')
+    if ordered > received:
+        remain = received - instance.old.quantity
+    else:
+        remain = 0
+    if instance.quantity > remain:
+        raise ValidationError(
+            _('%(unpack)s is not over than remain %(remain)s'),
+            params={'unpack': instance.quantity,
+                    'remain': remain},
+        )
+pre_save.connect(validate_unpack_quantity, sender=UnpackHistory)
 
 
 def unpacked_receiver(sender, instance, created, **kwargs):
