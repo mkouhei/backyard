@@ -63,6 +63,7 @@ class PriceHistoryAdmin(admin.ModelAdmin):
 class InventoryAdmin(admin.ModelAdmin):
     """Inventories list view."""
     list_display = ('product_name',
+                    'group',
                     'ordered',
                     'received',
                     'unpacked',
@@ -93,6 +94,7 @@ class OrderHistoryAdmin(admin.ModelAdmin):
     """Order histories list view."""
     list_display = ('ordered_at',
                     'ordered_product',
+                    'group',
                     'product_price',
                     'quantity',
                     'amount',
@@ -113,13 +115,14 @@ class OrderHistoryAdmin(admin.ModelAdmin):
 
 class ReceiveHistoryAdmin(admin.ModelAdmin):
     """receive histories."""
-    list_display = ('received_at', 'received_item', 'quantity')
+    list_display = ('received_at', 'received_item', 'group', 'quantity')
 
 
 class UnpackHistoryAdmin(admin.ModelAdmin):
     """unpacked histories."""
     list_display = ('unpacked_at',
                     'unpacked_item',
+                    'group',
                     'ordered',
                     'received',
                     'unpacked',

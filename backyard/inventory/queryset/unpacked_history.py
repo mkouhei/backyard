@@ -15,13 +15,15 @@ class UnpackQuerySet(object):
     def ordered_quantity(self):
         """ordered quantity."""
         return OrderHistory.objects.filter(
-            Q(ordered_item__product=self.obj.unpacked_item)
+            (Q(ordered_item__product=self.obj.unpacked_item) &
+             Q(group=self.obj.group))
             ).aggregate(Sum('quantity')).get('quantity__sum')
 
     def received_quantity(self):
         """received quantity."""
         return ReceiveHistory.objects.filter(
-            Q(received_item__ordered_item__product=self.obj.unpacked_item)
+            (Q(received_item__ordered_item__product=self.obj.unpacked_item) &
+             Q(group=self.obj.group))
         ).aggregate(Sum('quantity')).get('quantity__sum')
 
     def unpacked_quantity(self):

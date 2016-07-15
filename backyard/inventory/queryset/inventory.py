@@ -16,25 +16,25 @@ class QuantityQuerySet(object):
     def ordered_item(self):
         """ordered item."""
         return OrderHistory.objects.filter(
-            Q(ordered_item__product=self.obj.product)
-        ).values('ordered_item__product').distinct()
+            Q(ordered_item__product=self.obj.product) & Q(group=self.obj.group)
+        )
 
     def ordered_quantity(self):
         """ordered quantity."""
         return OrderHistory.objects.filter(
-            Q(ordered_item__product=self.obj.product)
+            Q(ordered_item__product=self.obj.product) & Q(group=self.obj.group)
         ).aggregate(Sum('quantity')).get('quantity__sum')
 
     def received_quantity(self):
         """received quantity."""
         return ReceiveHistory.objects.filter(
-            Q(received_item=self.ordered_item())
+            Q(received_item=self.ordered_item()) & Q(group=self.obj.group)
         ).aggregate(Sum('quantity')).get('quantity__sum')
 
     def unpacked_quantity(self):
         """unpacked quantity."""
         return UnpackHistory.objects.filter(
-            Q(unpacked_item=self.obj.product)
+            Q(unpacked_item=self.obj.product) & Q(group=self.obj.group)
         ).aggregate(Sum('quantity')).get('quantity__sum')
 
     def remain_quantity(self):
