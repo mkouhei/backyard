@@ -2,4 +2,6 @@
 include =
     backyard/*
 omit =
+    backyard/core/wsgi.py
+    backyard/core/settings/*
     backyard/inventory/tests/*
