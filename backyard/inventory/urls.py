@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """backyard.inventory.urls."""
+from django.conf.urls import url
+from backyard.inventory import views
 
-from django.conf.urls import url, patterns
 
-
-urlpatterns = patterns('backyard.inventory.views',
-                       url(r'^', 'index', name='index'),)
+urlpatterns = [url(r'^', views.index)]
