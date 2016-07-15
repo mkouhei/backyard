@@ -43,12 +43,3 @@ Usage
 =====
 
 ToDo: Rewrite me.
-
-::
-
-  $ python
-  >>> import backyard
-  >>> backyard.sample.hello()
-  'hello'
-  >>>
-
