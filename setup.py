@@ -86,8 +86,4 @@ setup(name='backyard',
       include_package_data=True,
       extras_require=extras_require,
       tests_require=['tox'],
-      cmdclass={'test': Tox},
-      entry_points={
-          'paste.app_factory': ['main = backyard.run:main'],
-          'console_scripts': ['initialize_backyard_db = '
-                              'backyard.scripts.initializedb:main']},)
+      cmdclass={'test': Tox},)
