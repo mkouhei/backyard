@@ -7,18 +7,17 @@ from backyard.inventory.models import Maker
 class MakerTransactionTest(TransactionTestCase):
     """transaction test of Maker."""
 
+    def setUp(self):
+        self.maker_name = 'someone maker'
+        self.query = Maker(name=self.maker_name)
+        self.query.save()
+
     def test_create(self):
         """create."""
-        maker_name = 'someone maker'
-        query = Maker(name=maker_name)
-        query.save()
-        self.assertEqual(query.__str__(), maker_name)
+        self.assertEqual(self.query.__str__(), self.maker_name)
 
     def test_create_fail(self):
-        """create."""
-        maker_name = 'someone maker'
-        query = Maker(name=maker_name)
-        query.save()
-        query = Maker(name=maker_name)
+        """create fail."""
+        query = Maker(name=self.maker_name)
         with self.assertRaises(IntegrityError):
             query.save()
