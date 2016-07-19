@@ -4,4 +4,7 @@ from django.conf.urls import url
 from backyard.inventory import views
 
 
-urlpatterns = [url(r'^', views.index)]
+urlpatterns = [
+    url(r'^login', views.login),
+    url(r'', views.index),
+]
