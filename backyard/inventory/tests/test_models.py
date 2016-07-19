@@ -2,7 +2,8 @@
 from django.test import TransactionTestCase
 from django.db import IntegrityError
 from backyard.inventory.models import (Maker,
-                                       Product)
+                                       Product,
+                                       Shop)
 
 
 class MakerTransactionTest(TransactionTestCase):
@@ -43,5 +44,27 @@ class ProductTransactionTest(TransactionTestCase):
     def test_create_fail(self):
         """create fail."""
         query = Product(name=self.product_name, maker=self.maker)
+        with self.assertRaises(IntegrityError):
+            query.save()
+
+
+class ShopTransactionTest(TransactionTestCase):
+    """transaction test of Shop."""
+
+    def setUp(self):
+        """initialize."""
+        self.name = 'some shop'
+        self.url = 'https://shop.example.com'
+        self.query = Shop(name=self.name, url=self.url)
+        self.query.save()
+
+    def test_create(self):
+        """create."""
+        self.assertEqual(self.query.__str__(), self.name)
+        self.assertEqual(self.query.url, self.url)
+
+    def test_create_fail(self):
+        """create fail."""
+        query = Shop(name=self.name, url=self.url)
         with self.assertRaises(IntegrityError):
             query.save()
