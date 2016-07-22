@@ -7,7 +7,3 @@ def index(request):
     """index."""
     return render_to_response('index.html')
 
-
-def login(request):
-    """login page."""
-    return render_to_response('login.html')

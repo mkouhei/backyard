@@ -1,1 +1,18 @@
-login
+{% extends "layout.html" %}
+{% block content %}
+<div class="login-page">
+  <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+    {% csrf_token %}
+    <div class="input-group col-sm-4">
+      <span class="input-group-addon">username</span>
+      <input id="username" name="username" class="form-control" type="text" placeholder="Input your account name"/>
+    </div>
+    <div class="input-group col-sm-4">
+      <span class="input-group-addon">password</span>
+      <input id="password" name="password" class="form-control" type="password" placeholder="Input your password"/>
+    </div>
+    <input id="submit" type="submit" class="btn btn-default" value="login"/>
+    <input type="hidden" name="next" value="{{ next }}"/>
+  </form>
+</div>
+{% endblock %}
