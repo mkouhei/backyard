@@ -1,0 +1,28 @@
+[
+  {"model": "auth.group",
+   "pk": 1,
+   "fields": {
+     "name": "foo"
+   }
+  },
+  {"model": "auth.group",
+   "pk": 2,
+   "fields": {
+     "name": "bar"
+   }
+  },
+  {"model": "auth.user",
+   "pk": 1,
+   "fields": {
+     "first_name": "Toshihisa",
+     "last_name": "Iida",
+     "username": "toshihisa",
+     "email": "ToshihisaIida@einrot.com",
+     "is_active": true,
+     "is_staff": false,
+     "is_superuser": false,
+     "password": "pbkdf2_sha256$24000$qct91SXHG2Us$yFdSLRuno8cc2aJJAxVCEdLyw+jtxgPrwVOUv0t31/s=",
+     "groups": [1]
+   }
+  }
+]

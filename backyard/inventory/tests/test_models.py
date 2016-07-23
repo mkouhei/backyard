@@ -1,9 +1,11 @@
 """backyard.inventory.tests.test_models"""
 from django.test import TransactionTestCase
 from django.db import IntegrityError
+from django.contrib.auth.models import User
 from backyard.inventory.models import (Maker,
                                        Product,
-                                       Shop)
+                                       Shop,
+                                       ExternalAccount)
 
 
 class MakerTransactionTest(TransactionTestCase):
@@ -68,3 +70,26 @@ class ShopTransactionTest(TransactionTestCase):
         query = Shop(name=self.name, url=self.url)
         with self.assertRaises(IntegrityError):
             query.save()
+
+
+class ExternalAccountTest(TransactionTestCase):
+    """transaction test of ExternalAccount."""
+    fixtures = ['backyard/inventory/tests/data/users.json']
+
+    def setUp(self):
+        """initialize."""
+        self.user = User.objects.get(pk=1)
+        shop = Shop(name='some shop', url='https://shop.example.com')
+        shop.save()
+        self.query = ExternalAccount(name=self.user.username,
+                                     email=self.user.email,
+                                     owner=self.user,
+                                     group=self.user.groups.get(),
+                                     encrypted_password=self.user.password,
+                                     shop=shop)
+        self.query.save()
+
+    def test_create(self):
+        """create."""
+        self.assertEqual(self.query.__str__(), self.user.username)
+        self.assertEqual(self.query.email, self.user.email)
