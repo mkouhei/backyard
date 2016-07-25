@@ -113,18 +113,28 @@ class PriceHistoryTest(TransactionTestCase):
 
     def setUp(self):
         """initialize."""
-        shop = Shop(name='some shop', url='https://shop.example.com')
-        shop.save()
+        self.shop = Shop(name='some shop', url='https://shop.example.com')
+        self.shop.save()
         maker = Maker(name='some maker')
         maker.save()
-        product = Product(name='some product', maker=maker)
-        product.save()
-        self.query = PriceHistory(product=product,
-                                  shop=shop,
-                                  registered_date=datetime.now(),
+        self.product = Product(name='some product', maker=maker)
+        self.product.save()
+        self.now = datetime.now()
+        self.query = PriceHistory(product=self.product,
+                                  shop=self.shop,
+                                  registered_date=self.now,
                                   price=1234)
         self.query.save()
 
     def test_create(self):
         """create."""
         self.assertEqual(self.query.__str__(), 'some product 1234')
+
+    def test_create_fail(self):
+        """create fail."""
+        self.query = PriceHistory(product=self.product,
+                                  shop=self.shop,
+                                  registered_date=self.now,
+                                  price=1234)
+        with self.assertRaises(IntegrityError):
+            self.query.save()
