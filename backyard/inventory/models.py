@@ -76,10 +76,14 @@ class Shop(BaseModel):
 
 class ExternalAccount(OwnerModel):
     """Online shop account."""
-    name = models.CharField(max_length=255)
+    name = models.CharField(unique=True, max_length=255)
     encrypted_password = models.CharField(max_length=255)
     email = models.EmailField()
     shop = models.ForeignKey(Shop)
+
+    class Meta(object):
+        """meta data."""
+        unique_together = ('name', 'shop')
 
     def __str__(self):
         return self.name
