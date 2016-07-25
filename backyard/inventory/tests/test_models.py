@@ -1,11 +1,13 @@
 """backyard.inventory.tests.test_models"""
+from datetime import datetime
 from django.test import TransactionTestCase
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 from backyard.inventory.models import (Maker,
                                        Product,
                                        Shop,
-                                       ExternalAccount)
+                                       ExternalAccount,
+                                       PriceHistory)
 
 
 class MakerTransactionTest(TransactionTestCase):
@@ -79,17 +81,50 @@ class ExternalAccountTest(TransactionTestCase):
     def setUp(self):
         """initialize."""
         self.user = User.objects.get(pk=1)
-        shop = Shop(name='some shop', url='https://shop.example.com')
-        shop.save()
+        self.shop = Shop(name='some shop', url='https://shop.example.com')
+        self.shop.save()
         self.query = ExternalAccount(name=self.user.username,
                                      email=self.user.email,
                                      owner=self.user,
                                      group=self.user.groups.get(),
                                      encrypted_password=self.user.password,
-                                     shop=shop)
+                                     shop=self.shop)
         self.query.save()
 
     def test_create(self):
         """create."""
         self.assertEqual(self.query.__str__(), self.user.username)
         self.assertEqual(self.query.email, self.user.email)
+
+    def test_create_fail(self):
+        """create fail."""
+        self.query = ExternalAccount(name=self.user.username,
+                                     email=self.user.email,
+                                     owner=self.user,
+                                     group=self.user.groups.get(),
+                                     encrypted_password=self.user.password,
+                                     shop=self.shop)
+        with self.assertRaises(IntegrityError):
+            self.query.save()
+
+
+class PriceHistoryTest(TransactionTestCase):
+    """transaction test of PriceHistory."""
+
+    def setUp(self):
+        """initialize."""
+        shop = Shop(name='some shop', url='https://shop.example.com')
+        shop.save()
+        maker = Maker(name='some maker')
+        maker.save()
+        product = Product(name='some product', maker=maker)
+        product.save()
+        self.query = PriceHistory(product=product,
+                                  shop=shop,
+                                  registered_date=datetime.now(),
+                                  price=1234)
+        self.query.save()
+
+    def test_create(self):
+        """create."""
+        self.assertEqual(self.query.__str__(), 'some product 1234')
