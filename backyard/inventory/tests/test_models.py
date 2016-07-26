@@ -151,14 +151,14 @@ class OrderHistoryTest(TransactionTestCase):
     def setUp(self):
         """initialize."""
         self.user = User.objects.get(pk=1)
-        self.shop = Shop(name='some shop', url='https://shop.example.com')
-        self.shop.save()
+        shop = Shop(name='some shop', url='https://shop.example.com')
+        shop.save()
         maker = Maker(name='some maker')
         maker.save()
         product = Product(name='some product', maker=maker)
         product.save()
         price = PriceHistory(product=product,
-                             shop=self.shop,
+                             shop=shop,
                              registered_date=datetime.now(),
                              price=1234)
         price.save()
