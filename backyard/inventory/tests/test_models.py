@@ -7,7 +7,11 @@ from backyard.inventory.models import (Maker,
                                        Product,
                                        Shop,
                                        ExternalAccount,
-                                       PriceHistory)
+                                       PriceHistory,
+                                       OrderHistory,
+                                       ReceiveHistory,
+                                       UnpackHistory)
+from backyard.inventory.queryset.order_history import OrderQuerySet
 
 
 class MakerTransactionTest(TransactionTestCase):
@@ -138,3 +142,46 @@ class PriceHistoryTest(TransactionTestCase):
                                   price=1234)
         with self.assertRaises(IntegrityError):
             self.query.save()
+
+
+class OrderHistoryTest(TransactionTestCase):
+    """transaction test of OrderHistory."""
+    fixtures = ['backyard/inventory/tests/data/users.json']
+
+    def setUp(self):
+        """initialize."""
+        self.user = User.objects.get(pk=1)
+        self.shop = Shop(name='some shop', url='https://shop.example.com')
+        self.shop.save()
+        maker = Maker(name='some maker')
+        maker.save()
+        product = Product(name='some product', maker=maker)
+        product.save()
+        price = PriceHistory(product=product,
+                             shop=self.shop,
+                             registered_date=datetime.now(),
+                             price=1234)
+        price.save()
+        self.order = OrderHistory(ordered_item=price,
+                                  quantity=10,
+                                  owner=self.user,
+                                  group=self.user.groups.get())
+        self.order.save()
+        self.received = None
+        self.unpacked = None
+
+    def test_create(self):
+        """create."""
+        self.assertTrue('some product 1234 * 10' in self.order.__str__())
+        self.received = ReceiveHistory.objects.filter(
+            received_item=self.order)[0]
+        self.assertEqual(self.received.quantity, 0)
+        self.unpacked = UnpackHistory.objects.get(
+            unpacked_item=OrderQuerySet(self.order).ordered_product())
+        self.assertEqual(self.unpacked.quantity, 0)
+        self.received.quantity = 6
+        self.received.save()
+        self.assertEqual(self.received.quantity, 6)
+        self.unpacked.quantity = 4
+        self.unpacked.save()
+        self.assertEqual(self.unpacked.quantity, 4)
