@@ -182,6 +182,8 @@ class OrderHistoryTest(TransactionTestCase):
         self.received.quantity = 6
         self.received.save()
         self.assertEqual(self.received.quantity, 6)
+        self.assertTrue('some product 1234 * 10' in self.received.__str__())
         self.unpacked.quantity = 4
         self.unpacked.save()
         self.assertEqual(self.unpacked.quantity, 4)
+        self.assertEqual('some product', self.unpacked.__str__())
