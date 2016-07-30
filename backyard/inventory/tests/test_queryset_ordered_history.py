@@ -1,4 +1,4 @@
-"""backyard.inventory.tests.test_queryset"""
+"""backyard.inventory.tests.test_queryset_ordered_history"""
 from datetime import datetime
 from django.test import TransactionTestCase
 from django.contrib.auth.models import User
