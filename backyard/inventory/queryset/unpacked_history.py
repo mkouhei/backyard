@@ -12,6 +12,7 @@ class UnpackQuerySet(object):
         """initialize."""
         self.obj = obj
 
+    @property
     def ordered_quantity(self):
         """ordered quantity."""
         return OrderHistory.objects.filter(
@@ -19,6 +20,7 @@ class UnpackQuerySet(object):
              Q(group=self.obj.group))
             ).aggregate(Sum('quantity')).get('quantity__sum')
 
+    @property
     def received_quantity(self):
         """received quantity."""
         return ReceiveHistory.objects.filter(
@@ -26,13 +28,15 @@ class UnpackQuerySet(object):
              Q(group=self.obj.group))
         ).aggregate(Sum('quantity')).get('quantity__sum')
 
+    @property
     def unpacked_quantity(self):
         """unpacked quantity."""
         return self.obj.quantity
 
+    @property
     def remain_quantity(self):
         """remain quantity."""
-        if self.ordered_quantity() >= self.received_quantity():
-            return self.received_quantity() - self.unpacked_quantity()
+        if self.ordered_quantity >= self.received_quantity:
+            return self.received_quantity - self.unpacked_quantity
         else:
             return 0

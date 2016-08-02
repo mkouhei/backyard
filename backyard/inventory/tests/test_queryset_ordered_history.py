@@ -36,13 +36,13 @@ class OrderQuerySetTest(TransactionTestCase):
 
     def test_ordered_product(self):
         """test ordered product."""
-        self.assertEqual(OrderQuerySet(self.order).ordered_product().__str__(),
+        self.assertEqual(OrderQuerySet(self.order).ordered_product.__str__(),
                          'some product')
 
     def test_product_price(self):
         """test ordered product."""
-        self.assertEqual(OrderQuerySet(self.order).product_price(), 1234)
+        self.assertEqual(OrderQuerySet(self.order).product_price, 1234)
 
     def test_amount(self):
         """test amount."""
-        self.assertEqual(OrderQuerySet(self.order).amount(), 12340)
+        self.assertEqual(OrderQuerySet(self.order).amount, 12340)

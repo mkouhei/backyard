@@ -42,7 +42,7 @@ class QuantityQuerySetTest(TransactionTestCase):
         self.received.quantity = 6
         self.received.save()
         self.unpacked = UnpackHistory.objects.get(
-            unpacked_item=OrderQuerySet(self.order).ordered_product())
+            unpacked_item=OrderQuerySet(self.order).ordered_product)
         self.unpacked.quantity = 4
         self.unpacked.save()
         self.inventory = Inventory.objects.get(product=self.product)
@@ -50,24 +50,25 @@ class QuantityQuerySetTest(TransactionTestCase):
     def test_ordered_item(self):
         """test ordered_item."""
         self.assertTrue(
-            'some product 1234 * 10' in QuantityQuerySet(self.inventory).ordered_item().__str__())
+            'some product 1234 * 10' in
+            QuantityQuerySet(self.inventory).ordered_item.__str__())
 
     def test_ordered_quantity(self):
         """test ordered_quantity."""
-        self.assertEqual(QuantityQuerySet(self.inventory).ordered_quantity(),
+        self.assertEqual(QuantityQuerySet(self.inventory).ordered_quantity,
                          10)
 
     def test_received_quantity(self):
         """test received_quantity."""
-        self.assertEqual(QuantityQuerySet(self.inventory).received_quantity(),
+        self.assertEqual(QuantityQuerySet(self.inventory).received_quantity,
                          6)
 
     def test_unpacked_quantity(self):
         """test unpacked_quantity."""
-        self.assertEqual(QuantityQuerySet(self.inventory).unpacked_quantity(),
+        self.assertEqual(QuantityQuerySet(self.inventory).unpacked_quantity,
                          4)
 
     def test_remain_quantity(self):
         """test remain_quantity."""
-        self.assertEqual(QuantityQuerySet(self.inventory).remain_quantity(),
+        self.assertEqual(QuantityQuerySet(self.inventory).remain_quantity,
                          2)

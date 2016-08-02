@@ -39,7 +39,7 @@ class UnpackQuerySetTest(TransactionTestCase):
         self.received = ReceiveHistory.objects.filter(
             received_item=self.order)[0]
         self.unpacked = UnpackHistory.objects.get(
-            unpacked_item=OrderQuerySet(self.order).ordered_product())
+            unpacked_item=OrderQuerySet(self.order).ordered_product)
 
     def test_ordered_quantity(self):
         """test ordered quantity."""
@@ -47,4 +47,4 @@ class UnpackQuerySetTest(TransactionTestCase):
         self.received.save()
         self.unpacked.quantity = 4
         self.unpacked.save()
-        self.assertEqual(UnpackQuerySet(self.unpacked).ordered_quantity(), 10)
+        self.assertEqual(UnpackQuerySet(self.unpacked).ordered_quantity, 10)

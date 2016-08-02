@@ -177,7 +177,7 @@ class OrderHistoryTest(TransactionTestCase):
             received_item=self.order)[0]
         self.assertEqual(self.received.quantity, 0)
         self.unpacked = UnpackHistory.objects.get(
-            unpacked_item=OrderQuerySet(self.order).ordered_product())
+            unpacked_item=OrderQuerySet(self.order).ordered_product)
         self.assertEqual(self.unpacked.quantity, 0)
         self.received.quantity = 6
         self.received.save()

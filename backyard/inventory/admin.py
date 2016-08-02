@@ -75,19 +75,19 @@ class InventoryAdmin(admin.ModelAdmin):
 
     def ordered(self, obj):
         """ordred quantity."""
-        return QuantityQuerySet(obj).ordered_quantity()
+        return QuantityQuerySet(obj).ordered_quantity
 
     def received(self, obj):
         """received quantity."""
-        return QuantityQuerySet(obj).received_quantity()
+        return QuantityQuerySet(obj).received_quantity
 
     def unpacked(self, obj):
         """unpacked quantity."""
-        return QuantityQuerySet(obj).unpacked_quantity()
+        return QuantityQuerySet(obj).unpacked_quantity
 
     def remain(self, obj):
         """remain quantity."""
-        return QuantityQuerySet(obj).remain_quantity()
+        return QuantityQuerySet(obj).remain_quantity
 
 
 class OrderHistoryAdmin(admin.ModelAdmin):
@@ -102,15 +102,15 @@ class OrderHistoryAdmin(admin.ModelAdmin):
 
     def ordered_product(self, obj):
         """order item name."""
-        return OrderQuerySet(obj).ordered_product()
+        return OrderQuerySet(obj).ordered_product
 
     def product_price(self, obj):
         """product price."""
-        return OrderQuerySet(obj).product_price()
+        return OrderQuerySet(obj).product_price
 
     def amount(self, obj):
         """amount."""
-        return OrderQuerySet(obj).amount()
+        return OrderQuerySet(obj).amount
 
 
 class ReceiveHistoryAdmin(admin.ModelAdmin):
@@ -130,19 +130,19 @@ class UnpackHistoryAdmin(admin.ModelAdmin):
 
     def ordered(self, obj):
         """ordered quantity."""
-        return UnpackQuerySet(obj).ordered_quantity()
+        return UnpackQuerySet(obj).ordered_quantity
 
     def unpacked(self, obj):
         """unpacked quantity."""
-        return UnpackQuerySet(obj).unpacked_quantity()
+        return UnpackQuerySet(obj).unpacked_quantity
 
     def received(self, obj):
         """received quantity."""
-        return UnpackQuerySet(obj).received_quantity()
+        return UnpackQuerySet(obj).received_quantity
 
     def remain(self, obj):
         """remain quantity."""
-        return UnpackQuerySet(obj).remain_quantity()
+        return UnpackQuerySet(obj).remain_quantity
 
 
 admin.site.register(Maker, MakerAdmin)
