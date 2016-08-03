@@ -123,26 +123,11 @@ class UnpackHistoryAdmin(admin.ModelAdmin):
     list_display = ('unpacked_at',
                     'unpacked_item',
                     'group',
-                    'ordered',
-                    'received',
-                    'unpacked',
-                    'remain')
-
-    def ordered(self, obj):
-        """ordered quantity."""
-        return UnpackQuerySet(obj).ordered_quantity
+                    'unpacked')
 
     def unpacked(self, obj):
         """unpacked quantity."""
         return UnpackQuerySet(obj).unpacked_quantity
-
-    def received(self, obj):
-        """received quantity."""
-        return UnpackQuerySet(obj).received_quantity
-
-    def remain(self, obj):
-        """remain quantity."""
-        return UnpackQuerySet(obj).remain_quantity
 
 
 admin.site.register(Maker, MakerAdmin)
