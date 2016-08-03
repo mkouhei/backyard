@@ -185,7 +185,10 @@ def validate_unpack_quantity(sender, instance, **kwargs):
         Q(received_item__ordered_item__product=instance.unpacked_item)
     ).aggregate(Sum('quantity')).get('quantity__sum')
     if ordered > received:
-        remain = received - instance.old.quantity
+        if instance.old.quantity is None:
+            remain = received
+        else:
+            remain = received - instance.old.quantity
     else:
         remain = 0
     if instance.quantity > remain:
