@@ -7,4 +7,4 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def index(request):
     """index."""
-    return render_to_response('index.html', {'project': 'backyard'})
+    return render_to_response('index.html')
