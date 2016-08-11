@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="row">
+  <dl>
+    <dt>name</dt>
+    <dd>{{ inventory.product.name }}</dd>
+    <dt>ordered</dt>
+    <dd>{{ quantity.ordered_quantity }}</dd>
+    <dt>received</dt>
+    <dd>{{ quantity.received_quantity }}</dd>
+    <dt>unpacked</dt>
+    <dd>{{ quantity.unpacked_quantity }}</dd>
+    <dt>remain</dt>
+    <dd>{{ quantity.remain_quantity }}</dd>
+  </dl>
+</div>
+{% endblock %}

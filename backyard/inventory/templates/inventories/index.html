@@ -13,7 +13,7 @@
     <tbody>
       {% for inventory, queryset in inventories %}
       <tr>
-        <td>{{ inventory.product.name }}</td>
+        <td><a href="/inventories/{{ inventory.id }}" alt="{{ inventory.product.name }}">{{ inventory.product.name }}</a></td>
         <td>{{ queryset.ordered_quantity }}</td>
         <td>{{ queryset.received_quantity }}</td>
         <td>{{ queryset.unpacked_quantity }}</td>
