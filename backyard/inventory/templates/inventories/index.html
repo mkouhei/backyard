@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+      <th>product name</th>
+      <th>ordered</th>
+      <th>received</th>
+      <th>unpacked</th>
+      <th>remain</th>
+    </thead>
+    <tbody>
+      {% for inventory, queryset in inventories %}
+      <tr>
+        <td>{{ inventory.product.name }}</td>
+        <td>{{ queryset.ordered_quantity }}</td>
+        <td>{{ queryset.received_quantity }}</td>
+        <td>{{ queryset.unpacked_quantity }}</td>
+        <td>{{ queryset.remain_quantity }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
