@@ -14,7 +14,7 @@ class TestUrls(unittest.TestCase):
         self.assertEqual(resolve('/logout').view_name,
                          'django.contrib.auth.views.logout')
         self.assertEqual(resolve('/').view_name,
-                         'backyard.inventory.views.index')
+                         'backyard.inventory.views.dashboard.DashboardView')
 
     def test_not_found(self):
         """not found."""
