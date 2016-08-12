@@ -1,17 +1,18 @@
 {% extends 'layout.html' %}
 {% block content %}
 <div class="row">
-  <dl>
-    <dt>name</dt>
-    <dd>{{ inventory.product.name }}</dd>
-    <dt>ordered</dt>
-    <dd>{{ quantity.ordered_quantity }}</dd>
-    <dt>received</dt>
-    <dd>{{ quantity.received_quantity }}</dd>
-    <dt>unpacked</dt>
-    <dd>{{ quantity.unpacked_quantity }}</dd>
-    <dt>remain</dt>
-    <dd>{{ quantity.remain_quantity }}</dd>
-  </dl>
+  <ol class="breadcrumb">
+    <li><a href="/inventories">inventories</a></li>
+    <li class="active">{{ inventory.product.name }}</li>
+  </ol>
+  <h3>{{ inventory.product.name }}</h3>
+  <div class="col-md-3">
+    <div class="list-group">
+      <a href="#" class="list-group-item">ordered <span class="badge">{{ quantity.ordered_quantity }}</span></a>
+      <a href="#" class="list-group-item">received <span class="badge">{{ quantity.received_quantity }}</span></a>
+      <a href="#" class="list-group-item">unpacked <span class="badge">{{ quantity.unpacked_quantity }}</span></a>
+      <a href="#" class="list-group-item">remain <span class="badge">{{ quantity.remain_quantity }}</span></a>
+    </div>
+  </div>
 </div>
 {% endblock %}
