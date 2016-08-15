@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^login', login),
     url(r'^logout', logout, {'template_name': 'logout.html'}),
     url(r'^inventories(/?)(([0-9]+)?)$', InventoriesView.as_view()),
-    url(r'', DashboardView.as_view()),
+    url(r'^$', DashboardView.as_view()),
 ]

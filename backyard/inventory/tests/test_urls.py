@@ -8,7 +8,7 @@ class TestUrls(unittest.TestCase):
 
     def test_urls(self):
         """test urls."""
-        self.assertEqual(resolve('/admin').view_name, 'admin:index')
+        self.assertEqual(resolve('/admin/').view_name, 'admin:index')
         self.assertEqual(resolve('/login').view_name,
                          'django.contrib.auth.views.login')
         self.assertEqual(resolve('/logout').view_name,
