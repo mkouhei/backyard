@@ -28,7 +28,7 @@ class OrdersView(TemplateView):
             Q(owner=self.request.user) &
             Q(ordered_item__id=product_id)
         )
-        product_name = ordered_obj[0].ordered_item.product.name
+        product_name = OrderQuerySet(ordered_obj[0]).product_name
         return render(self.request,
                       'products/orders/index.html',
                       {'product_id': product_id,

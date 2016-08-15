@@ -10,6 +10,11 @@ class OrderQuerySet(object):
         self.obj = obj
 
     @property
+    def product_name(self):
+        """product name."""
+        return self.ordered_product.name
+
+    @property
     def ordered_product(self):
         """ordered product."""
         return self.obj.ordered_item.product
