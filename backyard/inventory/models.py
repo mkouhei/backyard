@@ -216,7 +216,14 @@ class Inventory(OwnerModel):
 
 def inventory_receiver(sender, instance, created, **kwargs):
     """inventory item."""
-    Inventory(product=instance.ordered_item.product,
-              owner=instance.owner,
-              group=instance.group).save()
+    try:
+        Inventory.objects.get(
+            Q(product=instance.ordered_item.product) &
+            Q(owner=instance.owner) &
+            Q(group=instance.group)
+        )
+    except Inventory.DoesNotExist:
+        Inventory(product=instance.ordered_item.product,
+                  owner=instance.owner,
+                  group=instance.group).save()
 post_save.connect(inventory_receiver, sender=OrderHistory)
