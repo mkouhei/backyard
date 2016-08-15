@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="row">
+  <ol class="breadcrumb">
+    <li><a href="/inventories">inventories</a></li>
+    <li><a href="/inventories/{{ product_id }}">{{ product_name }}</a></li>
+    <li class="active">received histories</li>
+  </ol>
+  <table class="table table-striped">
+    <thead>
+      <th>received at</th>
+      <th>item</th>
+      <th>quantity</th>
+    </thead>
+    <tbody>
+      {% for item in received_items %}
+      <tr>
+        <td>{{ item.received_at }}</td>
+        <td>{{ item.received_item }}</td>
+        <td>{{ item.quantity }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
