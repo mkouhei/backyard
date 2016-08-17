@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="row">
+  <ol class="breadcrumb">
+    <li><a href="/inventories">inventories</a></li>
+    <li><a href="/inventories/{{ product_id }}">{{ product_name }}</a></li>
+    <li class="active">unpacked histories</li>
+  </ol>
+  <table class="table table-striped">
+    <thead>
+      <th>unpacked at</th>
+      <th>item</th>
+      <th>quantity</th>
+    </thead>
+    <tbody>
+      {% for item in unpacked_items %}
+      <tr>
+        <td>{{ item.unpacked_at }}</td>
+        <td>{{ item.unpacked_item }}</td>
+        <td>{{ item.quantity }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

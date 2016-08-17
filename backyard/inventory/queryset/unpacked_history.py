@@ -13,6 +13,11 @@ class UnpackQuerySet(object):
         self.obj = obj
 
     @property
+    def product_name(self):
+        """product name."""
+        return self.obj.unpacked_item.name
+
+    @property
     def ordered_quantity(self):
         """ordered quantity."""
         return OrderHistory.objects.filter(

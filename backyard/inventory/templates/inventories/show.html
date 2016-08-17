@@ -10,7 +10,7 @@
     <div class="list-group">
       <a href="/products/{{ inventory.product.id }}/orders/" class="list-group-item">ordered <span class="badge">{{ quantity.ordered_quantity }}</span></a>
       <a href="/products/{{ inventory.product.id }}/receives/" class="list-group-item">received <span class="badge">{{ quantity.received_quantity }}</span></a>
-      <a href="#" class="list-group-item">unpacked <span class="badge">{{ quantity.unpacked_quantity }}</span></a>
+      <a href="/products/{{ inventory.product.id }}/unpacks/" class="list-group-item">unpacked <span class="badge">{{ quantity.unpacked_quantity }}</span></a>
       <a href="#" class="list-group-item">remain <span class="badge">{{ quantity.remain_quantity }}</span></a>
     </div>
   </div>
