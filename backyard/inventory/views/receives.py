@@ -6,9 +6,10 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 
-from backyard.inventory.models import OrderHistory, ReceiveHistory
-from backyard.inventory.queryset.order_history import OrderQuerySet
-from backyard.inventory.queryset.received_history import ReceivedQuerySet
+from ..models.order_history import OrderHistory
+from ..models.receive_history import ReceiveHistory
+from ..queryset.order_history import OrderQuerySet
+from ..queryset.received_history import ReceivedQuerySet
 
 
 class ReceivesView(TemplateView):

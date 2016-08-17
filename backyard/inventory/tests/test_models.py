@@ -4,15 +4,16 @@ from django.test import TransactionTestCase
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from backyard.inventory.models import (Maker,
-                                       Product,
-                                       Shop,
-                                       ExternalAccount,
-                                       PriceHistory,
-                                       OrderHistory,
-                                       ReceiveHistory,
-                                       UnpackHistory)
-from backyard.inventory.queryset.order_history import OrderQuerySet
+
+from ..models.maker import Maker
+from ..models.product import Product
+from ..models.shop import Shop
+from ..models.external_account import ExternalAccount
+from ..models.price_history import PriceHistory
+from ..models.order_history import OrderHistory
+from ..models.receive_history import ReceiveHistory
+from ..models.unpack_history import UnpackHistory
+from ..queryset.order_history import OrderQuerySet
 
 
 class MakerTransactionTest(TransactionTestCase):

@@ -6,9 +6,10 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 
-from backyard.inventory.models import OrderHistory, UnpackHistory
-from backyard.inventory.queryset.order_history import OrderQuerySet
-from backyard.inventory.queryset.unpacked_history import UnpackQuerySet
+from ..models.order_history import OrderHistory
+from ..models.unpack_history import UnpackHistory
+from ..queryset.order_history import OrderQuerySet
+from ..queryset.unpacked_history import UnpackQuerySet
 
 
 class UnpacksView(TemplateView):

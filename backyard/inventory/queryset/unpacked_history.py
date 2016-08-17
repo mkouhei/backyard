@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """backyard.inventory.queryset.unpacked_history."""
 from django.db.models import Q, Sum
-from backyard.inventory.models import (OrderHistory,
-                                       ReceiveHistory)
+
+from ..models.order_history import OrderHistory
+from ..models.receive_history import ReceiveHistory
 
 
 class UnpackQuerySet(object):

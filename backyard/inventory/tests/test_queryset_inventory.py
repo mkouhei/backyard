@@ -2,16 +2,17 @@
 from datetime import datetime
 from django.test import TransactionTestCase
 from django.contrib.auth.models import User
-from backyard.inventory.models import (Maker,
-                                       Product,
-                                       Shop,
-                                       PriceHistory,
-                                       OrderHistory,
-                                       ReceiveHistory,
-                                       UnpackHistory,
-                                       Inventory)
-from backyard.inventory.queryset.order_history import OrderQuerySet
-from backyard.inventory.queryset.inventory import QuantityQuerySet
+
+from ..models.maker import Maker
+from ..models.product import Product
+from ..models.shop import Shop
+from ..models.price_history import PriceHistory
+from ..models.order_history import OrderHistory
+from ..models.receive_history import ReceiveHistory
+from ..models.unpack_history import UnpackHistory
+from ..models.inventory import Inventory
+from ..queryset.order_history import OrderQuerySet
+from ..queryset.inventory import QuantityQuerySet
 
 
 class QuantityQuerySetTest(TransactionTestCase):

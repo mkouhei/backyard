@@ -6,8 +6,8 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 
-from backyard.inventory.models import Inventory
-from backyard.inventory.queryset.inventory import QuantityQuerySet
+from ..models.inventory import Inventory
+from ..queryset.inventory import QuantityQuerySet
 
 
 class InventoriesView(TemplateView):

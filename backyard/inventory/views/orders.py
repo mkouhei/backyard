@@ -6,8 +6,8 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 
-from backyard.inventory.models import OrderHistory
-from backyard.inventory.queryset.order_history import OrderQuerySet
+from ..models.order_history import OrderHistory
+from ..queryset.order_history import OrderQuerySet
 
 
 class OrdersView(TemplateView):

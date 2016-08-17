@@ -1,17 +1,18 @@
 """backyard.inventory.admin."""
 from django.contrib import admin
-from backyard.inventory.models import (Maker,
-                                       Product,
-                                       ExternalAccount,
-                                       Shop,
-                                       PriceHistory,
-                                       Inventory,
-                                       OrderHistory,
-                                       ReceiveHistory,
-                                       UnpackHistory)
-from backyard.inventory.queryset.inventory import QuantityQuerySet
-from backyard.inventory.queryset.order_history import OrderQuerySet
-from backyard.inventory.queryset.unpacked_history import UnpackQuerySet
+
+from .models.maker import Maker
+from .models.product import Product
+from .models.external_account import ExternalAccount
+from .models.shop import Shop
+from .models.price_history import PriceHistory
+from .models.inventory import Inventory
+from .models.order_history import OrderHistory
+from .models.receive_history import ReceiveHistory
+from .models.unpack_history import UnpackHistory
+from .queryset.inventory import QuantityQuerySet
+from .queryset.order_history import OrderQuerySet
+from .queryset.unpacked_history import UnpackQuerySet
 
 
 class MakerAdmin(admin.ModelAdmin):

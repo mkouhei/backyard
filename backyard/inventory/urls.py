@@ -3,11 +3,11 @@
 from django.conf.urls import url
 from django.contrib.auth.views import login, logout
 
-from backyard.inventory.views.dashboard import DashboardView
-from backyard.inventory.views.inventories import InventoriesView
-from backyard.inventory.views.orders import OrdersView
-from backyard.inventory.views.receives import ReceivesView
-from backyard.inventory.views.unpacks import UnpacksView
+from .views.dashboard import DashboardView
+from .views.inventories import InventoriesView
+from .views.orders import OrdersView
+from .views.receives import ReceivesView
+from .views.unpacks import UnpacksView
 
 
 urlpatterns = [
