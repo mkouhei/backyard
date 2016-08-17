@@ -174,17 +174,21 @@ class OrderHistoryTest(TransactionTestCase):
     def test_create(self):
         """create."""
         self.assertTrue('some product 1234 * 10' in self.order.__str__())
-        self.received = ReceiveHistory.objects.filter(
-            received_item=self.order)[0]
-        self.assertEqual(self.received.quantity, 0)
-        self.unpacked = UnpackHistory.objects.get(
-            unpacked_item=OrderQuerySet(self.order).ordered_product)
-        self.assertEqual(self.unpacked.quantity, 0)
-        self.received.quantity = 6
+        self.received = ReceiveHistory(
+            received_item=self.order,
+            quantity=6,
+            owner=self.user,
+            group=self.user.groups.get()
+        )
         self.received.save()
         self.assertEqual(self.received.quantity, 6)
         self.assertTrue('some product 1234 * 10' in self.received.__str__())
-        self.unpacked.quantity = 4
+        self.unpacked = UnpackHistory(
+            unpacked_item=OrderQuerySet(self.order).ordered_product,
+            quantity=4,
+            owner=self.user,
+            group=self.user.groups.get()
+        )
         self.unpacked.save()
         self.assertEqual(self.unpacked.quantity, 4)
         self.assertEqual('some product', self.unpacked.__str__())
@@ -192,12 +196,12 @@ class OrderHistoryTest(TransactionTestCase):
     def test_invalid_receive_quantity(self):
         """fail to create."""
         self.assertTrue('some product 1234 * 10' in self.order.__str__())
-        self.received = ReceiveHistory.objects.filter(
-            received_item=self.order)[0]
-        self.assertEqual(self.received.quantity, 0)
-        self.unpacked = UnpackHistory.objects.get(
-            unpacked_item=OrderQuerySet(self.order).ordered_product)
-        self.assertEqual(self.unpacked.quantity, 0)
+        self.received = ReceiveHistory(
+            received_item=self.order,
+            quantity=11,
+            owner=self.user,
+            group=self.user.groups.get()
+        )
         self.received.quantity = 11
         with self.assertRaises(ValidationError):
             self.received.save()
@@ -205,16 +209,20 @@ class OrderHistoryTest(TransactionTestCase):
     def test_invalid_unpacked_quantity(self):
         """create."""
         self.assertTrue('some product 1234 * 10' in self.order.__str__())
-        self.received = ReceiveHistory.objects.filter(
-            received_item=self.order)[0]
-        self.assertEqual(self.received.quantity, 0)
-        self.unpacked = UnpackHistory.objects.get(
-            unpacked_item=OrderQuerySet(self.order).ordered_product)
-        self.assertEqual(self.unpacked.quantity, 0)
-        self.received.quantity = 6
+        self.received = ReceiveHistory(
+            received_item=self.order,
+            quantity=6,
+            owner=self.user,
+            group=self.user.groups.get()
+        )
         self.received.save()
         self.assertEqual(self.received.quantity, 6)
         self.assertTrue('some product 1234 * 10' in self.received.__str__())
-        self.unpacked.quantity = 7
+        self.unpacked = UnpackHistory(
+            unpacked_item=OrderQuerySet(self.order).ordered_product,
+            quantity=7,
+            owner=self.user,
+            group=self.user.groups.get()
+        )
         with self.assertRaises(ValidationError):
             self.unpacked.save()

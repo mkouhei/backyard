@@ -30,16 +30,28 @@ class QuantityQuerySet(object):
     @property
     def received_quantity(self):
         """received quantity."""
-        return ReceiveHistory.objects.filter(
-            Q(received_item=self.ordered_item) & Q(group=self.obj.group)
-        ).aggregate(Sum('quantity')).get('quantity__sum')
+        try:
+            quantity = ReceiveHistory.objects.filter(
+                Q(received_item=self.ordered_item) & Q(group=self.obj.group)
+            ).aggregate(Sum('quantity')).get('quantity__sum')
+            if quantity is None:
+                quantity = 0
+            return quantity
+        except ReceiveHistory.DoesNotExist:
+            return 0
 
     @property
     def unpacked_quantity(self):
         """unpacked quantity."""
-        return UnpackHistory.objects.filter(
-            Q(unpacked_item=self.obj.product) & Q(group=self.obj.group)
-        ).aggregate(Sum('quantity')).get('quantity__sum')
+        try:
+            quantity = UnpackHistory.objects.filter(
+                Q(unpacked_item=self.obj.product) & Q(group=self.obj.group)
+            ).aggregate(Sum('quantity')).get('quantity__sum')
+            if quantity is None:
+                quantity = 0
+            return quantity
+        except UnpackHistory.DoesNotExist:
+            return 0
 
     @property
     def remain_quantity(self):

@@ -37,13 +37,19 @@ class QuantityQuerySetTest(TransactionTestCase):
                                   owner=self.user,
                                   group=self.user.groups.get())
         self.order.save()
-        self.received = ReceiveHistory.objects.get(
-            received_item=self.order)
-        self.received.quantity = 6
+        self.received = ReceiveHistory(
+            received_item=self.order,
+            quantity=6,
+            owner=self.user,
+            group=self.user.groups.get()
+        )
         self.received.save()
-        self.unpacked = UnpackHistory.objects.get(
-            unpacked_item=OrderQuerySet(self.order).ordered_product)
-        self.unpacked.quantity = 4
+        self.unpacked = UnpackHistory(
+            unpacked_item=OrderQuerySet(self.order).ordered_product,
+            quantity=4,
+            owner=self.user,
+            group=self.user.groups.get()
+        )
         self.unpacked.save()
         self.inventory = Inventory.objects.get(product=self.product)
 

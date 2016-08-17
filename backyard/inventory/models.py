@@ -153,15 +153,6 @@ def validate_receive_quantity(sender, instance, **kwargs):
 pre_save.connect(validate_receive_quantity, sender=ReceiveHistory)
 
 
-def received_receiver(sender, instance, created, **kwargs):
-    """unreceived item."""
-    ReceiveHistory(received_item=instance,
-                   owner=instance.owner,
-                   group=instance.group,
-                   quantity=0).save()
-post_save.connect(received_receiver, sender=OrderHistory)
-
-
 class UnpackHistory(OwnerHistory):
     """Unpack histories."""
     unpacked_at = models.DateTimeField(auto_now=True)
@@ -178,35 +169,22 @@ class UnpackHistory(OwnerHistory):
 
 def validate_unpack_quantity(sender, instance, **kwargs):
     """validate unpacke quantity."""
-    ordered = OrderHistory.objects.filter(
-        Q(ordered_item__product=instance.unpacked_item)
-    ).aggregate(Sum('quantity')).get('quantity__sum')
     received = ReceiveHistory.objects.filter(
         Q(received_item__ordered_item__product=instance.unpacked_item)
     ).aggregate(Sum('quantity')).get('quantity__sum')
-    if ordered > received:
-        if instance.old.quantity is None:
-            remain = received
-        else:
-            remain = received - instance.old.quantity
-    else:
-        remain = 0
+    unpacked = UnpackHistory.objects.filter(
+        Q(unpacked_item=instance.unpacked_item)
+    ).aggregate(Sum('quantity')).get('quantity__sum')
+    if unpacked is None:
+        unpacked = 0
+    remain = received - unpacked
     if instance.quantity > remain:
         raise ValidationError(
             _('%(unpack)s is not over than remain %(remain)s'),
             params={'unpack': instance.quantity,
-                    'remain': remain},
+                    'remain': remain}
         )
 pre_save.connect(validate_unpack_quantity, sender=UnpackHistory)
-
-
-def unpacked_receiver(sender, instance, created, **kwargs):
-    """unpack item."""
-    UnpackHistory(unpacked_item=instance.ordered_item.product,
-                  owner=instance.owner,
-                  group=instance.group,
-                  quantity=0).save()
-post_save.connect(unpacked_receiver, sender=OrderHistory)
 
 
 class Inventory(OwnerModel):
