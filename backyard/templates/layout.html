@@ -1,51 +1,46 @@
-{% load staticfiles %}<!doctype html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Backyard</title>
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-
-    {% load static %}
-    <link href="{% static "css/dashboard.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" integrity="sha384-MIwDKRSSImVFAZCVLtU0LMDdON6KVCrZHyVQQj6e8wIEJkW4tvwqXrbMIya1vriY" crossorigin="anonymous">
   </head>
   <body>
     <!-- Navigation -->
-    <div class="navbar nabbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                  data-target="#navbar" area-expanded="false">
-            <span class="sr-only">menu</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a href="/" class="navbar-brand" title="backyard">backyard</a>
-        </div>
-
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">settings</a></li>
-            <li><a href="#">profile</a></li>
-            <li><a href="#">help</a></li>
-            <li><a href="/logout">logout</a></li>
-          </ul>
-          <form class="nabvar-form navbar-right">
-            <input type="text" class="form-control" placeholder="search...">
-          </form>
-        </div>
-      </div>
-      <!-- Page Content -->
-      <div class="container">
-        {% block content%}{% endblock %}
-      </div>
+    <nav class="navbar navbar-light">
+      <a href="/" class="navbar-brand" title="backyard">backyard</a>
+      <ul class="nav navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">menu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">settings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">help</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">logout</a>
+        </li>
+      </ul>
+      <form class="form-inline pull-xs-right">
+        <input type="text" class="form-control" placeholder="search">
+        <button type="submit" class="btn btn-outline-success">search</button>
+      </form>
+    </nav>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js" integrity="sha384-ux8v3A6CPtOTqOzMKiuo3d/DomGaaClxFYdCu2HPMBEkf6x2xiDyJ7gkXU0MWwaD" crossorigin="anonymous"></script>
+    <!-- Page Content -->
+    <div class="container">
+      {% block content%}{% endblock %}
     </div>
-
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-  </body>
+</div>
+</body>
 </html>
