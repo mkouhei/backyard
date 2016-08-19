@@ -14,6 +14,41 @@
       <a href="/products/{{ inventory.product.id }}/unpacks/" class="list-group-item">unpacked <span class="tag tag-default tag-pill pull-xs-right">{{ quantity.unpacked_quantity }}</span></a>
       <a class="list-group-item">remain <span class="tag tag-default tag-pill pull-xs-right">{{ quantity.remain_quantity }}</span></a>
     </div>
+    <div>
+      <button id="button-order-modal" type="button" class="btn btn-primary" data-toggle="modal" data-target="#order-modal">order</button>
+      <div id="order-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="order-moda-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="order-modal-label">order</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-horizontal">
+                <form>
+                  {% csrf_token %}
+                  <fieldset>
+                    <div class="control-group">
+                      <div class="input-group">
+                        hoge
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" href="#">confirm</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+{% load static %}
+<script src="{% static 'js/pages/inventories/show.js' %}"></script>
 {% endblock %}
