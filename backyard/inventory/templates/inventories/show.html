@@ -14,8 +14,10 @@
       <a href="/products/{{ inventory.product.id }}/unpacks/" class="list-group-item">unpacked <span class="tag tag-default tag-pill pull-xs-right">{{ quantity.unpacked_quantity }}</span></a>
       <a class="list-group-item">remain <span class="tag tag-default tag-pill pull-xs-right">{{ quantity.remain_quantity }}</span></a>
     </div>
-    <div>
+    <div class="button-group">
       <button id="button-order-modal" type="button" class="btn btn-primary" data-toggle="modal" data-target="#order-modal">order</button>
+    </div>
+    <div>
       <div id="order-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="order-moda-label" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
