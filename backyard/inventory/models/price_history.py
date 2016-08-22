@@ -24,7 +24,7 @@ class PriceHistory(BaseHistory):
 
     class Meta(object):
         """Meta data."""
-        unique_together = ('product', 'registered_date')
+        unique_together = ('product', 'registered_date', 'shop')
 
     def __str__(self):
         return '{0} {1}'.format(self.product, self.price)
