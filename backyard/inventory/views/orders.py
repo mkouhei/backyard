@@ -24,9 +24,12 @@ class OrdersView(TemplateView):
             return self._index(product_id)
 
     def _index(self, product_id):
-        ordered_obj = OrderHistory.objects.filter(
-            Q(owner=self.request.user) &
-            Q(ordered_item__id=product_id)
+        ordered_obj = (
+            OrderHistory.objects.select_related('ordered_item')
+            .filter(
+                Q(owner=self.request.user) &
+                Q(ordered_item__id=product_id)
+            )
         )
         product_name = OrderQuerySet(ordered_obj[0]).product_name
         return render(self.request,
