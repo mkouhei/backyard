@@ -26,9 +26,13 @@ class ReceivesView(TemplateView):
             return self._index(product_id)
 
     def _index(self, product_id):
-        received_obj = ReceiveHistory.objects.filter(
-            Q(owner=self.request.user) &
-            Q(received_item__id=product_id)
+        received_obj = (
+            ReceiveHistory.objects
+            .select_related('received_item__ordered_item')
+            .filter(
+                Q(owner=self.request.user) &
+                Q(received_item__id=product_id)
+            )
         )
         product_name = ReceivedQuerySet(received_obj[0]).product_name
         return render(self.request,
