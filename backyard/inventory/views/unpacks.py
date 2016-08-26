@@ -26,9 +26,12 @@ class UnpacksView(TemplateView):
             return self._index(product_id)
 
     def _index(self, product_id):
-        unpacked_obj = UnpackHistory.objects.filter(
-            Q(owner=self.request.user) &
-            Q(unpacked_item__id=product_id)
+        unpacked_obj = (
+            UnpackHistory.objects.select_related('unpacked_item')
+            .filter(
+                Q(owner=self.request.user) &
+                Q(unpacked_item__id=product_id)
+            )
         )
         product_name = UnpackQuerySet(unpacked_obj[0]).product_name
         return render(self.request,
