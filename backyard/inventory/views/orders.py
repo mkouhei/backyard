@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 
+from ..models.product import Product
 from ..models.order_history import OrderHistory
 from ..queryset.order_history import OrderQuerySet
 
@@ -20,7 +21,7 @@ class OrdersView(TemplateView):
         inventory_id = args[0]
         product_id = args[1]
         if args[4]:
-            return self._show(inventory_id, args[3])
+            return self._show(inventory_id, product_id, args[4])
         else:
             return self._index(inventory_id, product_id)
 
