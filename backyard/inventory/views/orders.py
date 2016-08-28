@@ -18,11 +18,11 @@ class OrdersView(TemplateView):
     def get(self, request, *args):
         """orders view."""
         inventory_id = args[0]
-        ordered_id = args[1]
+        product_id = args[1]
         if args[4]:
             return self._show(inventory_id, args[3])
         else:
-            return self._index(inventory_id, ordered_id)
+            return self._index(inventory_id, product_id)
 
     def _index(self, inventory_id, product_id):
         ordered_obj = (
@@ -32,11 +32,11 @@ class OrdersView(TemplateView):
                 Q(ordered_item__product_id=product_id)
             )
         )
-        product_name = OrderQuerySet(ordered_obj[0]).product_name
+        product = Product.objects.get(id=product_id)
         return render(self.request,
                       'products/orders/index.html',
                       {'inventory_id': inventory_id,
-                       'product_name': product_name,
+                       'product_name': product.name,
                        'ordered_items': ordered_obj})
 
     def _show(self, inventory_id, ordered_id):
