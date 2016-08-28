@@ -9,6 +9,7 @@ ALLOWED_HOSTS = ['localhost']
 ENVIRONMENT = os.path.basename(__file__).split('.py')[0]
 
 INSTALLED_APPS += (
+    'django_extensions',
 )
 
 DATABASES = {

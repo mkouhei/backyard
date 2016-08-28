@@ -61,6 +61,8 @@ requires = ['setuptools',
 
 extras_require = {
     'reST': ['Sphinx'],
+    'development': ['django-extensions',
+                    'pydotplus']
     }
 if os.environ.get('READTHEDOCS', None):
     extras_require['reST'].append('recommonmark')
