@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 
+from ..models.product import Product
 from ..models.order_history import OrderHistory
 from ..models.unpack_history import UnpackHistory
 from ..queryset.order_history import OrderQuerySet
@@ -19,13 +20,14 @@ class UnpacksView(TemplateView):
     @method_decorator(login_required)
     def get(self, request, *args):
         """receives view."""
-        product_id = args[0]
-        if args[3]:
-            return self._show(product_id, args[3])
+        inventory_id = args[0]
+        product_id = args[1]
+        if args[4]:
+            return self._show(inventory_id, product_id, args[4])
         else:
-            return self._index(product_id)
+            return self._index(inventory_id, product_id)
 
-    def _index(self, product_id):
+    def _index(self, inventory_id, product_id):
         unpacked_obj = (
             UnpackHistory.objects.select_related('unpacked_item')
             .filter(
@@ -33,14 +35,15 @@ class UnpacksView(TemplateView):
                 Q(unpacked_item__id=product_id)
             )
         )
-        product_name = UnpackQuerySet(unpacked_obj[0]).product_name
+        product = Product.objects.get(id=product_id)
         return render(self.request,
                       'products/unpacks/index.html',
-                      {'product_id': product_id,
-                       'product_name': product_name,
+                      {'inventory_id': inventory_id,
+                       'product_id': product_id,
+                       'product_name': product.name,
                        'unpacked_items': unpacked_obj})
 
-    def _show(self, product_id, ordered_id):
+    def _show(self, inventory_id, product_id, ordered_id):
         ordered_obj = OrderHistory.objects.get(
             Q(owner=self.request.user) &
             Q(id=ordered_id)

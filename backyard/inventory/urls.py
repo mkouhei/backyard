@@ -19,7 +19,7 @@ urlpatterns = [
         OrdersView.as_view()),
     url(r'^inventories/([0-9]+)/products/([0-9]+)/receives(/?)(([0-9]+)?)$',
         ReceivesView.as_view()),
-    url(r'^products/([0-9]+)/unpacks(/?)(([0-9]+)?)$',
+    url(r'^inventories/([0-9]+)/products/([0-9]+)/unpacks(/?)(([0-9]+)?)$',
         UnpacksView.as_view()),
     url(r'^$', DashboardView.as_view()),
 ]

@@ -10,8 +10,8 @@
   <div class="col-md-3">
     <div class="list-group">
       <a href="/inventories/{{ inventory.id }}/products/{{ inventory.product.id }}/orders/" class="list-group-item">ordered <span class="tag tag-default tag-pill pull-xs-right">{{ quantity.ordered_quantity }}</span></a>
-      <a href="/products/{{ inventory.product.id }}/unpacks/" class="list-group-item">unpacked <span class="tag tag-default tag-pill pull-xs-right">{{ quantity.unpacked_quantity }}</span></a>
       <a href="/inventories/{{ inventory.id }}/products/{{ inventory.product.id }}/receives/" class="list-group-item">received <span class="tag tag-default tag-pill pull-xs-right">{{ quantity.received_quantity }}</span></a>
+      <a href="/inventories/{{ inventory.id }}/products/{{ inventory.product.id }}/unpacks/" class="list-group-item">unpacked <span class="tag tag-default tag-pill pull-xs-right">{{ quantity.unpacked_quantity }}</span></a>
       <a class="list-group-item">remain <span class="tag tag-default tag-pill pull-xs-right">{{ quantity.remain_quantity }}</span></a>
     </div>
     <div class="button-group">
