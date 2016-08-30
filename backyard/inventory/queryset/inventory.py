@@ -45,9 +45,11 @@ class QuantityQuerySet(object):
     def unpacked_quantity(self):
         """unpacked quantity."""
         try:
-            quantity = UnpackHistory.objects.filter(
-                Q(unpacked_item=self.obj.product) & Q(group=self.obj.group)
-            ).aggregate(Sum('quantity')).get('quantity__sum')
+            quantity = (
+                self.obj.product.
+                unpackhistory_set.
+                aggregate(Sum('quantity')).get('quantity__sum')
+            )
             if quantity is None:
                 quantity = 0
             return quantity
