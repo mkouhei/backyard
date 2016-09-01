@@ -2,7 +2,6 @@
 """backyard.inventory.queryset.inventory."""
 from django.db.models import Q, Sum
 
-from ..models.order_history import OrderHistory
 from ..models.receive_history import ReceiveHistory
 from ..models.unpack_history import UnpackHistory
 
@@ -17,8 +16,10 @@ class QuantityQuerySet(object):
     @property
     def ordered_item(self):
         """ordered item."""
-        return OrderHistory.objects.filter(
-            Q(ordered_item__product=self.obj.product) & Q(group=self.obj.group)
+        return (
+            self.obj.product.pricehistory_set.select_related().
+            filter(orderhistory__quantity__gt=0).
+            values('product__name')
         )
 
     @property
