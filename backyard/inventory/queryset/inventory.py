@@ -2,7 +2,6 @@
 """backyard.inventory.queryset.inventory."""
 from django.db.models import Q, Sum
 
-from ..models.receive_history import ReceiveHistory
 from ..models.unpack_history import UnpackHistory
 
 
@@ -35,15 +34,15 @@ class QuantityQuerySet(object):
     @property
     def received_quantity(self):
         """received quantity."""
-        try:
-            quantity = ReceiveHistory.objects.filter(
-                Q(received_item=self.ordered_item) & Q(group=self.obj.group)
-            ).aggregate(Sum('quantity')).get('quantity__sum')
-            if quantity is None:
-                quantity = 0
-            return quantity
-        except ReceiveHistory.DoesNotExist:
-            return 0
+        quantity = (
+            self.obj.product.pricehistory_set.select_related().
+            filter(orderhistory__receivehistory__quantity__gte=0).
+            aggregate(Sum('orderhistory__receivehistory__quantity')).
+            get('orderhistory__receivehistory__quantity__sum')
+        )
+        if quantity is None:
+            quantity = 0
+        return quantity
 
     @property
     def unpacked_quantity(self):
