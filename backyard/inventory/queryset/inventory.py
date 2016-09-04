@@ -24,10 +24,12 @@ class QuantityQuerySet(object):
     def ordered_quantity(self):
         """ordered quantity."""
         return (
-            self.obj.product.pricehistory_set.select_related().
-            filter(orderhistory__quantity__gt=0).
-            aggregate(Sum('orderhistory__quantity')).
-            get('orderhistory__quantity__sum')
+            self.obj.filter(
+                Q(product__pricehistory__orderhistory__quantity__gt=0)
+            )
+            .annotate(
+                Sum('product__pricehistory__orderhistory__quantity')
+            )
         )
 
     @property
