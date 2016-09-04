@@ -2,7 +2,6 @@
 """backyard.inventory.queryset.inventory."""
 from django.db.models import Q, Sum
 
-from ..models.unpack_history import UnpackHistory
 
 
 class QuantityQuerySet(object):
@@ -47,17 +46,14 @@ class QuantityQuerySet(object):
     @property
     def unpacked_quantity(self):
         """unpacked quantity."""
-        try:
-            quantity = (
-                self.obj.product.
-                unpackhistory_set.
-                aggregate(Sum('quantity')).get('quantity__sum')
-            )
-            if quantity is None:
-                quantity = 0
-            return quantity
-        except UnpackHistory.DoesNotExist:
-            return 0
+        quantity = (
+            self.obj.product.unpackhistory_set.select_related().
+            aggregate(Sum('quantity')).
+            get('quantity__sum')
+        )
+        if quantity is None:
+            quantity = 0
+        return quantity
 
     @property
     def remain_quantity(self):
