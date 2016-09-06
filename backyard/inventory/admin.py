@@ -6,11 +6,9 @@ from .models.product import Product
 from .models.external_account import ExternalAccount
 from .models.shop import Shop
 from .models.price_history import PriceHistory
-from .models.inventory import Inventory
 from .models.order_history import OrderHistory
-from .models.receive_history import ReceiveHistory
 from .models.unpack_history import UnpackHistory
-from .queryset.inventory import QuantityQuerySet
+from .queryset.product import ProductQuerySet
 from .queryset.order_history import OrderQuerySet
 from .queryset.unpacked_history import UnpackQuerySet
 
@@ -22,11 +20,23 @@ class MakerAdmin(admin.ModelAdmin):
 
 class ProductAdmin(admin.ModelAdmin):
     """customize Product list view."""
-    list_display = ('name', 'maker_name')
+    list_display = ('name', 'maker_name', 'ordered', 'received', 'unpacked', 'remain')
 
     def maker_name(self, obj):
         """maker name."""
         return obj.maker.name
+
+    def ordered(self, obj):
+        return ProductQuerySet(obj).ordered_quantity
+
+    def received(self, obj):
+        return ProductQuerySet(obj).received_quantity
+
+    def unpacked(self, obj):
+        return ProductQuerySet(obj).unpacked_quantity
+
+    def remain(self, obj):
+        return ProductQuerySet(obj).remain_quantity
 
 
 class ExternalAccountAdmin(admin.ModelAdmin):
@@ -61,74 +71,29 @@ class PriceHistoryAdmin(admin.ModelAdmin):
         return obj.shop.name
 
 
-class InventoryAdmin(admin.ModelAdmin):
-    """Inventories list view."""
-    list_display = ('product_name',
-                    'group',
-                    'ordered',
-                    'received',
-                    'unpacked',
-                    'remain')
-
-    def product_name(self, obj):
-        """product name."""
-        return obj.product.name
-
-    def ordered(self, obj):
-        """ordred quantity."""
-        return QuantityQuerySet(obj).ordered_quantity
-
-    def received(self, obj):
-        """received quantity."""
-        return QuantityQuerySet(obj).received_quantity
-
-    def unpacked(self, obj):
-        """unpacked quantity."""
-        return QuantityQuerySet(obj).unpacked_quantity
-
-    def remain(self, obj):
-        """remain quantity."""
-        return QuantityQuerySet(obj).remain_quantity
-
-
 class OrderHistoryAdmin(admin.ModelAdmin):
     """Order histories list view."""
     list_display = ('ordered_at',
-                    'ordered_product',
+                    'product',
                     'group',
-                    'product_price',
-                    'quantity',
+                    'price',
+                    'ordered_quantity',
                     'amount',
+                    'received_at',
+                    'received_quantity',
                     'created_at')
-
-    def ordered_product(self, obj):
-        """order item name."""
-        return OrderQuerySet(obj).ordered_product
-
-    def product_price(self, obj):
-        """product price."""
-        return OrderQuerySet(obj).product_price
 
     def amount(self, obj):
         """amount."""
-        return OrderQuerySet(obj).amount
-
-
-class ReceiveHistoryAdmin(admin.ModelAdmin):
-    """receive histories."""
-    list_display = ('received_at', 'received_item', 'group', 'quantity')
+        return obj.ordered_quantity * obj.price.price
 
 
 class UnpackHistoryAdmin(admin.ModelAdmin):
     """unpacked histories."""
     list_display = ('unpacked_at',
-                    'unpacked_item',
+                    'product',
                     'group',
-                    'unpacked')
-
-    def unpacked(self, obj):
-        """unpacked quantity."""
-        return UnpackQuerySet(obj).unpacked_quantity
+                    'quantity')
 
 
 admin.site.register(Maker, MakerAdmin)
@@ -136,7 +101,5 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(ExternalAccount, ExternalAccountAdmin)
 admin.site.register(Shop, ShopAdmin)
 admin.site.register(PriceHistory, PriceHistoryAdmin)
-admin.site.register(Inventory, InventoryAdmin)
 admin.site.register(OrderHistory, OrderHistoryAdmin)
-admin.site.register(ReceiveHistory, ReceiveHistoryAdmin)
 admin.site.register(UnpackHistory, UnpackHistoryAdmin)
