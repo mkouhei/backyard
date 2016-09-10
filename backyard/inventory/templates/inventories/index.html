@@ -17,13 +17,13 @@
       </tr>
     </thead>
     <tbody>
-      {% for inventory, queryset in inventories %}
+      {% for product in products %}
       <tr>
-        <td><a href="/inventories/{{ inventory.id }}" alt="{{ inventory.product.name }}">{{ inventory.product.name }}</a></td>
-        <td>{{ queryset.ordered_quantity }}</td>
-        <td>{{ queryset.received_quantity }}</td>
-        <td>{{ queryset.unpacked_quantity }}</td>
-        <td>{{ queryset.remain_quantity }}</td>
+        <td><a href="/inventories/{{ product.id }}" alt="{{ product.name }}">{{ product.name }}</a></td>
+        <td>{{ product.ordered }}</td>
+        <td>{{ product.received }}</td>
+        <td>{{ product.unpacked }}</td>
+        <td>{{ product.remain_quantity }}</td>
       </tr>
       {% endfor %}
     </tbody>
