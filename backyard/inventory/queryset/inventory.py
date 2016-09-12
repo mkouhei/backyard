@@ -29,3 +29,7 @@ class InventoryQuerySet(object):
             Q(unpackhistory__isnull=False) &
             Q(unpackhistory__group=self.group)
         )
+
+    @property
+    def quantities(self):
+        return (self.ordered & self.unpacked).values()

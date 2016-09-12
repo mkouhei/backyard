@@ -24,7 +24,6 @@ class InventoriesView(TemplateView):
         
     def _index(self):
         group = self.request.user.groups.first()
-        query = InventoryQuerySet(group)
         return render(self.request,
                       'inventories/index.html',
-                      {'products': (query.ordered & query.unpacked).values()})
+                      {'products': InventoryQuerySet(group).quantities})
