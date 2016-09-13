@@ -6,6 +6,7 @@ from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 
 from ..queryset.inventory import InventoryQuerySet
+from ..queryset.product import ProductQuerySet
 
 
 class InventoriesView(TemplateView):
@@ -20,7 +21,10 @@ class InventoriesView(TemplateView):
             return self._index()
 
     def _show(self, product_id):
-        return
+        group = self.request.user.groups.first()
+        return render(self.request,
+                      'inventories/show.html',
+                      {'product': ProductQuerySet(product_id, group).quantities})
         
     def _index(self):
         group = self.request.user.groups.first()
