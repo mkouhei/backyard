@@ -4,14 +4,20 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/">Home</a></li>
     <li class="breadcrumb-item"><a href="/inventories">inventories</a></li>
-    <li class="breadcrumb-item"><a href="/inventories/{{ inventory_id }}">{{ product_name }}</a></li>
+    <li class="breadcrumb-item"><a href="/inventories/{{ product_id }}">{{ product_name }}</a></li>
     <li class="breadcrumb-item active">ordered histories</li>
   </ol>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>ordered at</th>
-        <th>item</th>
+        <th colspan="2">ordered</th>
+        <th rowspan="2">price</th>
+        <th colspan="2">received</th>
+      </tr>
+      <tr>
+        <th>date</th>
+        <th>quantity</th>
+        <th>date</th>
         <th>quantity</th>
       </tr>
     </thead>
@@ -19,8 +25,10 @@
       {% for item in ordered_items %}
       <tr>
         <td>{{ item.ordered_at }}</td>
-        <td>{{ item.ordered_item }}</td>
-        <td>{{ item.quantity }}</td>
+        <td>{{ item.ordered_quantity }}</td>
+        <td>{{ item.price__price }}</td>
+        <td>{{ item.received_at }}</td>
+        <td>{{ item.received_quantity }}</td>
       </tr>
       {% endfor %}
     </tbody>

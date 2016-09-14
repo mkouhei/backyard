@@ -1,30 +1,35 @@
 # -*- coding: utf-8 -*-
 """backyard.inventory.queryset.order_history."""
+from django.db.models import Q
+
+from ..models.order_history import OrderHistory
 
 
 class OrderQuerySet(object):
     """Order quereis."""
 
-    def __init__(self, obj):
+    def __init__(self, product_id, group):
         """initialize."""
-        self.obj = obj
+        self.product_id = product_id
+        self.group = group
+        self.order_query = OrderHistory.objects.select_related(
+            'price'
+        ).filter(
+            Q(product_id=self.product_id) &
+            Q(group=self.group)
+        )
+
+    @property
+    def order(self):
+        return self.order_query.values(
+            'ordered_at',
+            'price__price',
+            'ordered_quantity',
+            'received_at',
+            'received_quantity',
+        )
 
     @property
     def product_name(self):
         """product name."""
-        return self.ordered_product.name
-
-    @property
-    def ordered_product(self):
-        """ordered product."""
-        return self.obj.ordered_item.product
-
-    @property
-    def product_price(self):
-        """product price."""
-        return self.obj.ordered_item.price
-
-    @property
-    def amount(self):
-        """amount query."""
-        return self.obj.ordered_item.price * self.obj.quantity
+        return self.order_query.values('product__name').first().get('product__name')

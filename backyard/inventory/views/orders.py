@@ -18,35 +18,21 @@ class OrdersView(TemplateView):
     @method_decorator(login_required)
     def get(self, request, *args):
         """orders view."""
-        inventory_id = args[0]
-        product_id = args[1]
-        if args[4]:
-            return self._show(inventory_id, product_id, args[4])
+        product_id = args[0]
+        if args[2]:
+            return self._show(product_id, args[2])
         else:
-            return self._index(inventory_id, product_id)
+            return self._index(product_id)
 
-    def _index(self, inventory_id, product_id):
-        ordered_obj = (
-            OrderHistory.objects.select_related('ordered_item__product')
-            .filter(
-                Q(owner=self.request.user) &
-                Q(ordered_item__product_id=product_id)
-            )
-        )
-        product = Product.objects.get(id=product_id)
+    def _index(self, product_id):
+        group = self.request.user.groups.first()
+        query = OrderQuerySet(product_id, group)
         return render(self.request,
-                      'products/orders/index.html',
-                      {'inventory_id': inventory_id,
-                       'product_name': product.name,
-                       'ordered_items': ordered_obj})
+                      'inventories/orders/index.html',
+                      {'ordered_items': query.order,
+                       'product_name': query.product_name,
+                       'product_id': product_id}
+        )
 
-    def _show(self, inventory_id, ordered_id):
-        ordered_obj = OrderHistory.objects.get(
-            Q(owner=self.request.user) &
-            Q(id=inventory_id)
-        )
-        query = OrderQuerySet(ordered_obj)
-        return render(self.request,
-                      'products/orders/show.html',
-                      {'ordered_item': ordered_obj,
-                       'query': query})
+    def _show(self, product_id, ordered_id):
+        return
