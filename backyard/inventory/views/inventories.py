@@ -25,7 +25,7 @@ class InventoriesView(TemplateView):
         return render(self.request,
                       'inventories/show.html',
                       {'product': ProductQuerySet(product_id, group).quantities})
-        
+
     def _index(self):
         group = self.request.user.groups.first()
         return render(self.request,
