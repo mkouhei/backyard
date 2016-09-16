@@ -4,13 +4,20 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/">Home</a></li>
     <li class="breadcrumb-item"><a href="/inventories">inventories</a></li>
-    <li class="breadcrumb-item active">{{ inventory.product.name }}</li>
+    <li class="breadcrumb-item active">{{ product.name }}</li>
   </ol>
   <h3>{{ inventory.product.name }}</h3>
   <div class="col-md-3">
     <div class="list-group">
-      <a href="/inventories/{{ product.id }}/orders/" class="list-group-item">ordered <span class="tag tag-default tag-pill pull-xs-right">{{ product.ordered }}</span></a>
-      <a href="/inventories/{{ product.id }}/receives/" class="list-group-item">received <span class="tag tag-default tag-pill pull-xs-right">{{ product.received }}</span></a>
+      <a href="/inventories/{{ product.id }}/orders/" class="list-group-item">
+        ordered
+        <span class="tag tag-default tag-pill pull-xs-right">
+          received: {{ product.received }}
+        </span>
+        <span class="tag tag-default tag-pill pull-xs-right">
+          ordered: {{ product.ordered }}
+        </span>
+      </a>
       <a href="/inventories/{{ product.id }}/unpacks/" class="list-group-item">unpacked <span class="tag tag-default tag-pill pull-xs-right">{{ product.unpacked }}</span></a>
       <a class="list-group-item">remain <span class="tag tag-default tag-pill pull-xs-right">{{ quantity.remain_quantity }}</span></a>
     </div>
