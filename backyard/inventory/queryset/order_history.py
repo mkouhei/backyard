@@ -15,7 +15,7 @@ class OrderQuerySet(object):
         self.order_query = OrderHistory.objects.select_related(
             'price'
         ).filter(
-            Q(product_id=self.product_id) &
+            Q(product__id=self.product_id) &
             Q(group=self.group)
         )
 
