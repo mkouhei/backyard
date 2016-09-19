@@ -1,19 +1,15 @@
 # -*- coding: utf-8 -*-
 """backyard.inventory.views.orders."""
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 
-from ..models.product import Product
-from ..models.order_history import OrderHistory
 from ..queryset.order_history import OrderQuerySet
 
 
 class OrdersView(TemplateView):
     """Orders."""
-    model = OrderHistory
 
     @method_decorator(login_required)
     def get(self, request, *args):
