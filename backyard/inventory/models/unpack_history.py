@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 """backyard.inventory.models.unpack_history."""
-from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Q, Sum
-from django.db.models.signals import pre_save
-from django.utils.translation import ugettext_lazy as _
 
 from . import OwnerHistory
 from .product import Product
