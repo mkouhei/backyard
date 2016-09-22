@@ -21,6 +21,7 @@ class OrderQuerySet(object):
 
     @property
     def order(self):
+        """order query."""
         return self.order_query.values(
             'ordered_at',
             'price__price',
