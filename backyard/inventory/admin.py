@@ -9,8 +9,6 @@ from .models.price_history import PriceHistory
 from .models.order_history import OrderHistory
 from .models.unpack_history import UnpackHistory
 from .queryset.product import ProductQuerySet
-from .queryset.order_history import OrderQuerySet
-from .queryset.unpacked_history import UnpackQuerySet
 
 
 class MakerAdmin(admin.ModelAdmin):
