@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """backyard.inventory.queryset.unpacked_history."""
-from django.db.models import Q, Sum
+from django.db.models import Q
 
 from ..models.unpack_history import UnpackHistory
 
