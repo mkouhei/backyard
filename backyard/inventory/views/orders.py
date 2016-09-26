@@ -27,8 +27,7 @@ class OrdersView(TemplateView):
                       'inventories/orders/index.html',
                       {'ordered_items': query.order,
                        'product_name': query.product_name,
-                       'product_id': product_id}
-        )
+                       'product_id': product_id})
 
     def _show(self, product_id, ordered_id):
         return
