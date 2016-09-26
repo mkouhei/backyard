@@ -24,4 +24,3 @@ class OrderHistory(OwnerHistory):
         return '{0} * {1} ({2})'.format(self.product,
                                         self.ordered_quantity,
                                         self.ordered_at)
-
