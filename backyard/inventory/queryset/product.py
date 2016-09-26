@@ -27,6 +27,7 @@ class ProductQuerySet(object):
 
     @property
     def unpacked(self):
+        """unpacked quantity."""
         return Product.objects.extra(
             select={'unpacked': 'quantity'}
         ).filter(
@@ -37,4 +38,5 @@ class ProductQuerySet(object):
 
     @property
     def quantities(self):
+        """quantities."""
         return (self.ordered & self.unpacked).values().first()

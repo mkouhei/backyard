@@ -25,15 +25,19 @@ class ProductAdmin(admin.ModelAdmin):
         return obj.maker.name
 
     def ordered(self, obj):
+        """ordered quantity."""
         return ProductQuerySet(obj).ordered_quantity
 
     def received(self, obj):
+        """received quantity."""
         return ProductQuerySet(obj).received_quantity
 
     def unpacked(self, obj):
+        """unpacked quantity."""
         return ProductQuerySet(obj).unpacked_quantity
 
     def remain(self, obj):
+        """remain quantity."""
         return ProductQuerySet(obj).remain_quantity
 
 
