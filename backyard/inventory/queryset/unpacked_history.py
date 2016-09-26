@@ -19,6 +19,7 @@ class UnpackQuerySet(object):
 
     @property
     def unpack(self):
+        """unpacked."""
         return self.unpack_query.values(
             'unpacked_at',
             'quantity'
@@ -26,4 +27,5 @@ class UnpackQuerySet(object):
 
     @property
     def product_name(self):
+        """product name."""
         return self.unpack_query.values('product__name').first().get('product__name')
