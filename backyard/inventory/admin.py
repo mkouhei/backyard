@@ -8,7 +8,6 @@ from .models.shop import Shop
 from .models.price_history import PriceHistory
 from .models.order_history import OrderHistory
 from .models.unpack_history import UnpackHistory
-from .queryset.product import ProductQuerySet
 
 
 class MakerAdmin(admin.ModelAdmin):
@@ -18,27 +17,11 @@ class MakerAdmin(admin.ModelAdmin):
 
 class ProductAdmin(admin.ModelAdmin):
     """customize Product list view."""
-    list_display = ('name', 'maker_name', 'ordered', 'received', 'unpacked', 'remain')
+    list_display = ('name', 'maker_name')
 
     def maker_name(self, obj):
         """maker name."""
         return obj.maker.name
-
-    def ordered(self, obj):
-        """ordered quantity."""
-        return ProductQuerySet(obj).ordered_quantity
-
-    def received(self, obj):
-        """received quantity."""
-        return ProductQuerySet(obj).received_quantity
-
-    def unpacked(self, obj):
-        """unpacked quantity."""
-        return ProductQuerySet(obj).unpacked_quantity
-
-    def remain(self, obj):
-        """remain quantity."""
-        return ProductQuerySet(obj).remain_quantity
 
 
 class ExternalAccountAdmin(admin.ModelAdmin):
